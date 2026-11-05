@@ -1,0 +1,21 @@
+{
+  "name": "كرانشي ومور",
+  "short_name": "كرانشي",
+  "description": "نظام إدارة مطعم كرانشي ومور: الطلبات والمطبخ والمخزن والحسابات",
+  "lang": "ar",
+  "dir": "rtl",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#2A1A12",
+  "background_color": "#F6EBD9",
+  "categories": ["business", "food"],
+  "icons": [
+    { "src": "img/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "img/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "img/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
