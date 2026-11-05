@@ -1,2 +1,1 @@
-# crunchy
-Crunchy &amp; More restaurant app
+# كرانشي ومور — نظام المطعم
