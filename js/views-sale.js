@@ -62,7 +62,7 @@ function renderBoard(){
       ${o.customer&&(o.customer.name||o.customer.phone)?`<div class="who">${h(o.customer.name||"")} <span class="num">${h(o.customer.phone||"")}</span>${o.area?` · <b>${h(o.area)}</b>`:""}${o.customer.address?` · ${h(o.customer.address)}`:""}</div>`:""}
       ${o.deliveryFee?`<div class="note">يستلم من الزبون: ${money((o.revenue||0)+(o.deliveryFee||0))} (ويا التوصيل)</div>`:""}
       <div class="row" style="margin-top:4px"><button class="btn dark sm" data-adv="${h(o.id)}" ${S.busy[o.id]?"disabled":""}>${NEXT_T[o.status]}</button>
-        ${S.confirmDel==="cx"+o.id?`<button class="btn danger sm" data-cxok="${h(o.id)}" style="flex:0">تأكيد الإلغاء</button>`:`<button class="btn ghost sm" data-askdel="cx${h(o.id)}" style="flex:0">إلغاء</button>`}</div></div>`}).join(""):`<div class="empty" style="padding:12px">ما كو</div>`}</div>`};
+        ${!can("cancel")?"":S.confirmDel==="cx"+o.id?`<button class="btn danger sm" data-cxok="${h(o.id)}" style="flex:0">تأكيد الإلغاء</button>`:`<button class="btn ghost sm" data-askdel="cx${h(o.id)}" style="flex:0">إلغاء</button>`}</div></div>`}).join(""):`<div class="empty" style="padding:12px">ما كو</div>`}</div>`};
   const done=tb.filter(o=>o.status==="done"||o.status==="cancelled").sort((a,b)=>b.ts-a.ts);
   return `<div class="row" style="margin-bottom:12px;align-items:center"><h2 style="margin:0">طلبات اليوم${multi?" · "+h(brName(curBranch())):""}</h2><span class="note" style="flex:1 1 220px">الطلب اللي يتجاوز <span class="num">${late}</span> دقيقة يتلون أحمر</span></div>
   <div class="board">${col("new","جديد")}${col("prep","قيد التحضير")}${col("ready","جاهز")}${col("out","بالطريق")}</div>

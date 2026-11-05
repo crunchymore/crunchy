@@ -107,6 +107,18 @@ function renderMenu(){
     </tbody></table></div>`:`<div class="empty">ما كو وجبات بعد</div>`}</div>`;
 }
 
+/* ---------- permissions ---------- */
+const PERMS=[
+  ["sale","البيع",[["pos","طلب جديد (يسجل طلبات)"],["board","متابعة الطلبات وتسليمها"],["customers","الزباين"],["cancel","إلغاء الطلبات"]]],
+  ["kitchen","المطبخ",[["kds","شاشة المطبخ"],["recipes","الوصفات"]]],
+  ["store","المخزن",[["stock","الأرصدة"],["receive","استلام فواتير الموردين"],["transfer","ترحيل للفرع"],["waste","تلف وجرد"],["items","المواد"],["suppliers","الموردين"]]],
+  ["admin","الإدارة",[["dash","لوحة التحكم (المبيعات والأرباح)"]]]];
+const ROLE_PERMS={cashier:["pos","board","customers","cancel"],kitchen:["kds","recipes"],store:["stock","receive","transfer","waste","items","suppliers"],
+  manager:["pos","board","customers","cancel","kds","recipes","stock","receive","transfer","waste","items","suppliers","dash"]};
+function permBox(pre,role,perms){const ok=ROLE_PERMS[role]||[];const on=k=>!Array.isArray(perms)||perms.includes(k);
+  return `<fieldset class="perms" style="border:1px solid var(--line,#ddd);border-radius:12px;padding:10px 12px;margin:6px 0"><legend class="label" style="padding:0 6px">الصلاحيات</legend>
+    ${PERMS.map(([g,t,list])=>{const l=list.filter(([k])=>ok.includes(k));return l.length?`<div style="margin:4px 0"><b class="note">${t}</b><div class="row" style="flex-wrap:wrap;gap:4px 14px">${l.map(([k,lb])=>`<label class="chk"><input type="checkbox" data-perm="${k}" data-pre="${h(pre)}" ${on(k)?"checked":""}> ${lb}</label>`).join("")}</div></div>`:""}).join("")}
+    <p class="note" style="margin:6px 0 0">شيل العلامة عن أي شي ما تريده يشوفه أو يسويه. النظام يمنعه حتى لو حاول من جهاز ثاني.</p></fieldset>`}
 /* ---------- owner: staff ---------- */
 function waMessage(x){
   return `هلا ${x.name}،
@@ -140,6 +152,7 @@ function renderStaff(){
       <div class="row"><div class="field"><label class="label" for="sf-name-${h(s.id)}">الاسم</label><input id="sf-name-${h(s.id)}" data-stf="${h(s.id)}" data-sf="full_name" value="${h(s.full_name||"")}" maxlength="80"></div>
         <div class="field"><label class="label" for="sf-role-${h(s.id)}">الدور</label><select id="sf-role-${h(s.id)}" data-stf="${h(s.id)}" data-sf="role">${opts(ROLE_OPTS,s.role)}</select></div>
         <div class="field"><label class="label" for="sf-br-${h(s.id)}">الفرع</label><select id="sf-br-${h(s.id)}" data-stf="${h(s.id)}" data-sf="branch_id">${opts(brO,s.branch_id||"")}</select></div></div>
+      ${permBox(s.id,s.role,s.perms)}
       <div class="stf-actions"><label class="chk"><input type="checkbox" id="sf-act-${h(s.id)}" data-stf="${h(s.id)}" data-sf="active" ${s.active?"checked":""}> فعال</label>
         <span style="flex:1"></span>
         ${S.confirmDel==="rst"+s.id?`<button class="btn dark sm" data-rstok="${h(s.id)}">تأكيد كلمة سر جديدة</button>`:`<button class="btn ghost sm" data-askdel="rst${h(s.id)}">كلمة سر مؤقتة جديدة</button>`}
@@ -159,6 +172,7 @@ function renderStaff(){
       <div class="field"><label class="label" for="stPw">كلمة السر المؤقتة</label><div class="pwgen"><input id="stPw" dir="ltr" class="num" required minlength="8" value="${h(ns.pw)}" autocomplete="off"><button type="button" class="btn ghost sm" id="stGen">توليد</button></div></div>
       <div class="row"><div class="field"><label class="label" for="stRole">الدور</label><select id="stRole">${opts(ROLE_OPTS,ns.role)}</select></div>
         <div class="field"><label class="label" for="stBr">الفرع</label><select id="stBr">${opts(brO,ns.branch)}</select></div></div>
+      ${permBox("new",ns.role,ns.perms)}
       <button class="btn wide" ${S.saving?"disabled":""}>${S.saving?"جاري الإضافة…":"إضافة الموظف"}</button></form></div></div>`;
 }
 

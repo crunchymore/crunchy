@@ -8,8 +8,10 @@ const VIEWS=[
   ["dash","لوحة التحكم","admin","owner manager"],["settle","الموازنة","admin","owner"],["menu","المنيو والأسعار","admin","owner"],
   ["staff","الموظفين","admin","owner"],["branches","الفروع","admin","owner"],["setup","الإعدادات","admin","owner"]];
 const HOME={owner:"dash",manager:"dash",cashier:"pos",kitchen:"kds",store:"stock"};
-const allowed=()=>S.role?VIEWS.filter(v=>v[3].split(" ").includes(S.role)):[];
-function view(){const v=(location.hash||"").slice(1);if(v==="account")return v;const ok=allowed().map(x=>x[0]);return ok.includes(v)?v:(HOME[S.role]||"pos")}
+const myPerms=()=>S.role&&S.role!=="owner"&&S.me&&Array.isArray(S.me.perms)?S.me.perms:null;
+const can=k=>{const p=myPerms();return !p||p.includes(k)};
+const allowed=()=>S.role?VIEWS.filter(v=>v[3].split(" ").includes(S.role)&&(S.role==="owner"||can(v[0]))):[];
+function view(){const v=(location.hash||"").slice(1);if(v==="account")return v;const ok=allowed().map(x=>x[0]);return ok.includes(v)?v:ok.includes(HOME[S.role])?HOME[S.role]:(ok[0]||"account")}
 function renderNav(){
   const v=view();const al=allowed();const cur=VIEWS.find(x=>x[0]===v);const g=cur?cur[2]:null;
   const r=$("#role");r.hidden=!S.role;const lb=lockedBranch();

@@ -33,7 +33,9 @@ document.addEventListener("click",async e=>{
   if(d.ardel!==undefined){const ar=[...(S.settings.areas||[])];ar.splice(Number(d.ardel),1);await saveSettings({areas:ar});return}
   if(t.id==="chAdd"){await saveSettings({channels:[...S.settings.channels,{name:"مصدر جديد",pct:0,own:false}]});return}
   if(d.copy){const el=document.getElementById(d.copy);const txt=el?(el.value!==undefined&&el.tagName==="TEXTAREA"?el.value:el.textContent):"";
-    try{await navigator.clipboard.writeText(txt);toast("انتسخت الرسالة")}catch(_){if(el&&el.select){el.focus();el.select()}toast("انحدد النص، انسخه يدوياً")}return}
+    let ok=false;try{await navigator.clipboard.writeText(txt);ok=true}catch(_){}
+    if(!ok){try{const ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("readonly","");ta.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,txt.length);ok=document.execCommand("copy");ta.remove()}catch(_){}}
+    if(ok)toast("انتسخت الرسالة ✓ الصقها بالواتساب");else{if(el&&el.select){el.focus();el.select()}toast("انحدد النص، اضغط Ctrl+C أو انسخ يدوياً")}return}
   if(d.costmode){if(d.costmode===S.settings.costMode||S.modal)return;openModal({kind:"costmode",mode:d.costmode});return}
   if(d.dbr){S.dashBr=d.dbr;render();return}
   if(d.sloc){S.stockLoc=d.sloc;render();return}
@@ -82,7 +84,7 @@ document.addEventListener("change",async e=>{const t=e.target;const d=t.dataset;
   if(S.screen!=="app")return;
   if(t.id==="brsel"){S.branch=t.value;LS.set("crunchy.branch",t.value);S.trf=null;render();return}
   if(t.id==="farea"){S.f.area=t.value;render();return}
-  if(t.id==="stRole"&&S.newStaff){S.newStaff.role=t.value;return}
+  if(t.id==="stRole"&&S.newStaff){S.newStaff.role=t.value;S.newStaff.perms=null;render();return}
   if(t.id==="stBr"&&S.newStaff){S.newStaff.branch=t.value;return}
   if(d.arI!==undefined){const ar=(S.settings.areas||[]).map(a=>({...a}));const i=Number(d.arI);ar[i][d.af]=d.af==="fee"?Math.max(0,Number(t.value)||0):t.value.trim()||"منطقة";await saveSettings({areas:ar});return}
   if(d.chOwn!==undefined){const ch=S.settings.channels.map(c=>({...c}));ch[Number(d.chOwn)].own=t.checked;await saveSettings({channels:ch});return}
@@ -107,8 +109,12 @@ document.addEventListener("change",async e=>{const t=e.target;const d=t.dataset;
   if(d.inv&&d.if){const f=d.if;let v=f==="active"?t.checked:f==="minQty"?Math.max(0,Number(t.value)||0):t.value.trim();if(f==="name"&&!v)return render();
     if(f==="code"&&v&&S.inv.some(i=>i.id!==d.inv&&i.code===v)){toast("هذا الكود مستخدم لمادة ثانية");return render()}
     await write(()=>q(sb.from("inv_items").update({[INV_COL[f]]:v}).eq("id",d.inv)),"تم الحفظ",["inv"]);renderSafe();return}
+  if(d.perm&&d.pre){const boxes=[...document.querySelectorAll(`input[data-perm][data-pre="${CSS.escape(d.pre)}"]`)];const list=boxes.filter(b=>b.checked).map(b=>b.dataset.perm);
+    if(d.pre==="new"){S.newStaff=S.newStaff||{};S.newStaff.perms=list;return}
+    const s=S.staff.find(x=>x.id===d.pre);if(!s)return;const full=(ROLE_PERMS[s.role]||[]).every(k=>list.includes(k));
+    const ok=await write(()=>rpc("owner_set_perms",{p_user_id:s.id,p_perms:full?null:list}),"انحفظت الصلاحيات",["staff"]);if(!ok)await load("staff");renderSafe();return}
   if(d.stf&&d.sf){const s=S.staff.find(x=>x.id===d.stf);if(!s)return;const nx={...s,[d.sf]:d.sf==="active"?t.checked:t.value.trim()};
-    const ok=await write(()=>rpc("owner_set_staff",{p_user_id:s.id,p_full_name:nx.full_name||"",p_role:nx.role,p_branch_id:nx.branch_id||null,p_active:!!nx.active,p_must_change:null}),"تم الحفظ",["staff"]);
+    const ok=await write(async()=>{await rpc("owner_set_staff",{p_user_id:s.id,p_full_name:nx.full_name||"",p_role:nx.role,p_branch_id:nx.branch_id||null,p_active:!!nx.active,p_must_change:null});if(d.sf==="role"&&nx.role!==s.role)await rpc("owner_set_perms",{p_user_id:s.id,p_perms:null})},"تم الحفظ",["staff"]);
     if(!ok)await load("staff");renderSafe();return}
   if(d.brf&&d.bf){const f=d.bf;const v=f==="active"?t.checked:t.value.trim();if(f==="name"&&!v)return render();
     await write(()=>q(sb.from("branches").update({[f]:v}).eq("id",d.brf)),"تم الحفظ",["branches"]);renderSafe();return}
@@ -214,7 +220,9 @@ async function saveWaste(){
 async function createStaff(){
   if(S.saving)return;
   const name=$("#stName").value.trim(),raw=$("#stPhone").value,phone=normPhone(raw),pw=$("#stPw").value.trim(),role=$("#stRole").value,branch=$("#stBr").value;
-  S.newStaff={name,phone:raw,pw,role,branch};
+  const pl=[...document.querySelectorAll('input[data-perm][data-pre="new"]')].filter(b=>b.checked).map(b=>b.dataset.perm);
+  const perms=(ROLE_PERMS[role]||[]).every(k=>pl.includes(k))?null:pl;
+  S.newStaff={name,phone:raw,pw,role,branch,perms};
   if(!name){toast("اكتب اسم الموظف");return}
   if(!phone){toast("اكتب رقم موبايل عراقي صحيح يبدي بـ 07");return}
   if(pw.length<8){toast("كلمة السر المؤقتة لازم 8 أحرف أو أكثر");return}
@@ -228,6 +236,7 @@ async function createStaff(){
     const u=data&&data.user;
     if(!u||!u.id||(Array.isArray(u.identities)&&u.identities.length===0))throw {message:"already registered"};
     await rpc("owner_set_staff",{p_user_id:u.id,p_full_name:name,p_role:role,p_branch_id:branch||null,p_active:true,p_must_change:true});
+    if(perms)await rpc("owner_set_perms",{p_user_id:u.id,p_perms:perms});
     try{await tmp.auth.signOut({scope:"local"})}catch(_){}
     S.staffMsg={name,phone,pw,role};S.newStaff=null;await load("staff");toast("انضاف الموظف");
   }catch(err){console.warn(err);
