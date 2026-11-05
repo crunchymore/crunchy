@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>كرانشي ومور</title>
 <meta name="description" content="نظام إدارة مطعم كرانشي ومور">
-<meta name="theme-color" content="#2A1A12">
+<meta name="theme-color" content="#22150E">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="img/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
@@ -15,26 +15,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="css/app.css">
 <script>try{var t=localStorage.getItem("crunchy.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(_){}</script>
 </head>
 <body>
 <div id="gate" class="gate"><div class="gate-card"><img class="gate-logo lg-l" src="img/logo-light.png" alt="كرانشي ومور"><img class="gate-logo lg-d" src="img/logo-dark.png" alt="كرانشي ومور"><div class="empty">جاري التحميل…</div></div></div>
 
-<div class="wrap" id="app" hidden>
+<div class="shell" id="app" hidden>
   <header class="top">
-    <a class="brand" href="#" aria-label="الرئيسية"><img class="lg-l" src="img/logo-light.png" alt="كرانشي ومور"><img class="lg-d" src="img/logo-dark.png" alt="كرانشي ومور"></a>
+    <a class="brand mob-brand" href="#" aria-label="الرئيسية"><img src="img/logo-dark.png" alt="كرانشي ومور"></a>
+    <h1 class="page-t" id="pageT"></h1>
     <div class="hdr-side">
       <span id="brbox"></span>
       <span id="role" class="role" hidden></span>
       <button id="installBtn" class="btn ghost sm" type="button" hidden>تثبيت التطبيق</button>
-      <a id="meBtn" class="btn ghost sm me" href="#account"></a>
+      <a id="meBtn" class="me" href="#account"></a>
     </div>
-    <nav class="tabs" id="tabs" aria-label="الأقسام"></nav>
   </header>
-  <div id="status" class="banner" hidden></div>
-  <main id="view"><div class="empty">جاري التحميل…</div></main>
+  <nav class="tabs" id="tabs" aria-label="صفحات القسم"></nav>
+  <div class="content">
+    <div id="status" class="banner" hidden></div>
+    <main id="view"><div class="empty">جاري التحميل…</div></main>
+  </div>
+  <aside class="sidebar" aria-label="القائمة">
+    <a class="brand side-brand" href="#" aria-label="الرئيسية"><img src="img/logo-dark.png" alt="كرانشي ومور"></a>
+    <nav class="side-nav" id="sideNav" aria-label="الأقسام الرئيسية"></nav>
+  </aside>
+  <nav class="bnav" id="bnav" aria-label="الأقسام الرئيسية" hidden></nav>
 </div>
 <div id="modal"></div>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>

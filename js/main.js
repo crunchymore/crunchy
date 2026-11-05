@@ -7,6 +7,11 @@ const VIEWS=[
   ["waste","تلف وجرد","store","owner manager store"],["items","المواد","store","owner manager store"],["suppliers","الموردين","store","owner manager store"],
   ["dash","لوحة التحكم","admin","owner manager"],["settle","الموازنة","admin","owner"],["menu","المنيو والأسعار","admin","owner"],
   ["staff","الموظفين","admin","owner"],["branches","الفروع","admin","owner"],["setup","الإعدادات","admin","owner"]];
+const ICON={
+  sale:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>',
+  kitchen:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></svg>',
+  store:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+  admin:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>'};
 const HOME={owner:"dash",manager:"dash",cashier:"pos",kitchen:"kds",store:"stock"};
 const myPerms=()=>S.role&&S.role!=="owner"&&S.me&&Array.isArray(S.me.perms)?S.me.perms:null;
 const can=k=>{const p=myPerms();return !p||p.includes(k)};
@@ -16,15 +21,21 @@ function renderNav(){
   const v=view();const al=allowed();const cur=VIEWS.find(x=>x[0]===v);const g=cur?cur[2]:null;
   const r=$("#role");r.hidden=!S.role;const lb=lockedBranch();
   r.textContent=S.role==="manager"&&lb?"مدير فرع":(ROLE_T[S.role]||"");r.className="role"+(S.role==="owner"?" owner":"");
-  const me=$("#meBtn");me.textContent=(S.me&&S.me.full_name)||"حسابي";me.setAttribute("aria-current",v==="account"?"page":"false");
+  const me=$("#meBtn");me.textContent=(S.me&&S.me.full_name)||"حسابي";me.dataset.i=((S.me&&S.me.full_name)||"ح").trim().charAt(0);me.setAttribute("aria-current",v==="account"?"page":"false");
   const ab=activeBranches();
   $("#brbox").innerHTML=lb?(ab.length>1||S.branches.length>1?`<span class="role">${h(brName(lb))}</span>`:""):ab.length>1?`<select id="brsel" class="brsel" aria-label="الفرع">${opts(ab.map(b=>[b.id,b.name||"فرع"]),curBranch())}</select>`:"";
   const tb=todayBr();const activeN=tb.filter(o=>ACTIVE.includes(o.status)).length;const kN=tb.filter(o=>o.status==="new"||o.status==="prep").length;
   const dot=k=>k==="board"&&activeN?`<span class="dot num">${activeN}</span>`:k==="kds"&&kN?`<span class="dot num">${kN}</span>`:"";
-  const groups=GROUPS.filter(([k])=>al.some(x=>x[2]===k));
-  const gh=groups.length>1?`<div class="grp" role="list">${groups.map(([k,t])=>{const first=al.find(x=>x[2]===k);const n=k==="sale"&&al.some(x=>x[0]==="board")?activeN:k==="kitchen"&&al.some(x=>x[0]==="kds")?kN:0;return `<a role="listitem" href="#${first[0]}" data-grp="${k}" ${k===g?'aria-current="true"':""}>${t}${n&&k!==g?`<span class="dot num">${n}</span>`:""}</a>`}).join("")}</div>`:"";
-  const subs=al.filter(x=>x[2]===(g||(groups[0]||[])[0]));
-  $("#tabs").innerHTML=gh+(subs.length>1||groups.length<=1?`<div class="subs">${subs.map(([k,t])=>`<a href="#${k}" ${k===v?'aria-current="page"':""}>${t}${dot(k)}</a>`).join("")}</div>`:"");
+  const groups=GROUPS.filter(([k])=>al.some(x=>x[2]===k));const curG=g||(groups[0]||[])[0];
+  const gN=k=>k==="sale"&&al.some(x=>x[0]==="board")?activeN:k==="kitchen"&&al.some(x=>x[0]==="kds")?kN:0;
+  const glink=(cls)=>groups.map(([k,t])=>{const first=al.find(x=>x[2]===k);const n=gN(k);return `<a class="${cls}" href="#${first[0]}" data-grp="${k}" ${k===curG?'aria-current="true"':""}>${ICON[k]||""}<span class="gl">${t}</span>${n?`<span class="dot num">${n}</span>`:""}</a>`}).join("");
+  $("#sideNav").innerHTML=glink("sl");
+  const bnav=groups.length>1?glink("bl"):"";$("#bnav").innerHTML=bnav;$("#bnav").hidden=!bnav;
+  const subs=al.filter(x=>x[2]===curG);
+  $("#tabs").innerHTML=subs.length>1?`<div class="subs">${subs.map(([k,t])=>`<a href="#${k}" ${k===v?'aria-current="page"':""}>${t}${dot(k)}</a>`).join("")}</div>`:"";
+  $("#tabs").hidden=subs.length<2;
+  document.body.classList.toggle("has-bnav",!!bnav);
+  $("#pageT").textContent=v==="account"?"حسابي":(cur?cur[1]:"");
   document.title=(cur?cur[1]+" · ":"")+"كرانشي ومور";
 }
 const VIEW_FN={pos:renderPOS,board:renderBoard,customers:renderCustomers,kds:renderKDS,recipes:renderRecipes,stock:renderStock,receive:renderReceive,transfer:renderTransfer,
