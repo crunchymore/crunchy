@@ -1,0 +1,385 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>منيو كرانشي ومور</title>
+<meta name="description" content="منيو كرانشي ومور: كنتاكي، برگر، بيتزا، صاج وسندويشات. اطلب على واتساب والتوصيل لباب البيت ببغداد.">
+<meta name="theme-color" content="#120B07">
+<link rel="icon" type="image/png" sizes="32x32" href="../img/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png">
+<script src="../config.js"></script>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Reem+Kufi:wght@500;600;700&family=Marcellus&display=swap">
+<style>
+/* Layout: a night-dark menu house. Gold-lit hero with the logo, then a gallery of tilting photo tiles (one per section);
+   a tile opens its section as its own view with a photo banner and a list of dishes; a gold cart bar rises from the bottom. */
+:root{
+  --night:#120B07;      /* page ground */
+  --espresso:#1D130D;   /* raised surface */
+  --ember:#2B1C13;      /* card / input surface */
+  --cream:#F6EBD9;      /* text */
+  --muted:#B8A28A;      /* secondary text */
+  --gold:#E8A33D;       /* brand accent */
+  --gold-hi:#F7CF7D;    /* bevel highlight */
+  --gold-deep:#8C5614;  /* bevel shadow / pressed edge */
+  --on-gold:#25170E;
+  --line:rgba(232,163,61,.2);
+  --rust:#E07A4F;
+  --shade:rgba(0,0,0,.55);
+  --f-ar:"Reem Kufi","Almarai",Tahoma,sans-serif;
+  --f-en:"Marcellus","Times New Roman",serif;
+  --f-body:"Almarai",system-ui,"Segoe UI",Tahoma,sans-serif;
+  --r:20px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--night)}
+body{background:var(--night);color:var(--cream);font-family:var(--f-body);font-size:16px;line-height:1.55;padding-bottom:110px;-webkit-tap-highlight-color:transparent}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--night)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+.num{font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}
+.in{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.disp{font-family:var(--f-ar);font-weight:700;letter-spacing:0}
+html[lang="en"] .disp{font-family:var(--f-en);font-weight:400;letter-spacing:.02em}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+html[lang="ar"] .eyebrow{letter-spacing:0;font-size:13px}
+
+/* ---------- 3D buttons ---------- */
+.b3{--edge:var(--gold-deep);position:relative;border:0;border-radius:14px;padding:12px 20px;font-weight:800;
+  background:linear-gradient(180deg,var(--gold-hi) 0%,var(--gold) 55%,#D48B26 100%);color:var(--on-gold);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 0 rgba(0,0,0,.18),0 5px 0 var(--edge),0 12px 22px rgba(0,0,0,.5);
+  transform:translateY(-3px);transition:transform .09s ease,box-shadow .09s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.b3:hover{filter:brightness(1.05)}
+.b3:active,.b3.pressed{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(0,0,0,.2),0 0 0 var(--edge),0 4px 10px rgba(0,0,0,.45)}
+.b3.dark{background:linear-gradient(180deg,#3A271B,#24170F);color:var(--cream);--edge:#0A0604;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 0 var(--edge),0 10px 18px rgba(0,0,0,.5)}
+.b3.dark:active{box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 var(--edge),0 3px 8px rgba(0,0,0,.5)}
+.b3.round{width:44px;height:44px;padding:0;border-radius:50%;font-size:22px;line-height:1}
+.b3[aria-disabled="true"]{filter:grayscale(.7) brightness(.7);pointer-events:none}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(18,11,7,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .in{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.top .mono{height:34px;width:auto;display:block}
+.top .r{display:flex;align-items:center;gap:10px}
+.lang{display:flex;background:var(--ember);border-radius:999px;padding:3px;box-shadow:inset 0 2px 4px rgba(0,0,0,.5)}
+.lang button{border:0;background:none;border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:linear-gradient(180deg,var(--gold-hi),var(--gold));color:var(--on-gold);box-shadow:0 2px 0 var(--gold-deep)}
+.cartbtn{position:relative;padding:9px 14px;border-radius:12px;font-size:14px}
+.cartbtn .dot{position:absolute;top:-8px;inset-inline-end:-8px;min-width:22px;height:22px;border-radius:11px;background:var(--rust);color:#fff;font-size:12px;display:grid;place-items:center;padding:0 6px;box-shadow:0 2px 0 #7A3216}
+.cartbtn .dot[hidden]{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;padding-block:40px 34px;text-align:center;
+  background:radial-gradient(60% 80% at 50% 0%,rgba(232,163,61,.22),transparent 70%),radial-gradient(40% 50% at 85% 100%,rgba(224,122,79,.12),transparent 70%),var(--night)}
+.hero .in{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}
+.hero .logo{width:min(320px,80vw);height:auto;filter:drop-shadow(0 10px 30px rgba(232,163,61,.25))}
+.hero h1{margin:0;font-size:clamp(26px,5.4vw,40px);line-height:1.25;text-wrap:balance;color:var(--cream)}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(43,28,19,.7);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700}
+.chip svg{width:16px;height:16px;flex:0 0 auto;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.embers{position:absolute;inset:0;pointer-events:none}
+.embers i{position:absolute;bottom:-10px;width:4px;height:4px;border-radius:50%;background:var(--gold-hi);opacity:0;box-shadow:0 0 8px var(--gold);animation:rise 7s linear infinite}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(-320px) translateX(20px);opacity:0}}
+
+/* ---------- gallery ---------- */
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:6px 16px;padding-block:26px 16px;flex-wrap:wrap}
+.sec-h h2{margin:4px 0 0;font-size:clamp(24px,4vw,32px)}
+.sec-h p{margin:0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;perspective:1100px}
+@media (max-width:860px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+.tile.feat{grid-column:span 2;aspect-ratio:auto}
+@media (max-width:520px){.tile.feat{aspect-ratio:16/11}}
+.tile{--rx:0deg;--ry:0deg;--mx:50%;--my:30%;position:relative;display:block;width:100%;border:0;padding:0;text-align:start;background:var(--ember);color:var(--cream);text-decoration:none;border-radius:var(--r);
+  aspect-ratio:4/5;max-width:100%;overflow:visible;transform-style:preserve-3d;transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px);
+  transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 6px 0 #0B0705,0 18px 36px rgba(0,0,0,.55),0 0 0 1px var(--line)}
+.tile .ph{position:absolute;inset:0;border-radius:var(--r);overflow:hidden}
+.tile .ph img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.04);transition:transform .5s ease}
+.tile .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,11,7,0) 35%,rgba(18,11,7,.72) 68%,rgba(18,11,7,.96) 100%)}
+.tile .shine{position:absolute;inset:0;border-radius:var(--r);pointer-events:none;background:radial-gradient(circle at var(--mx) var(--my),rgba(255,230,180,.22),transparent 45%);opacity:0;transition:opacity .25s}
+.tile .cap{position:absolute;inset-inline:16px;bottom:18px;display:flex;flex-direction:column;gap:4px;transform:translateZ(18px)}
+.tile .nm{font-size:clamp(22px,3.4vw,30px);line-height:1.15;color:var(--cream);text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.tile .sub{font-size:13px;color:var(--muted)}
+.tile .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.tile .from{font-size:13px;color:var(--cream)}
+.tile .from b{color:var(--gold-hi);font-size:15px}
+.tile .go{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;
+  background:linear-gradient(180deg,var(--gold-hi),var(--gold) 60%,#D48B26);color:var(--on-gold);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 4px 0 var(--gold-deep),0 8px 16px rgba(0,0,0,.5);transform:translateY(-2px);transition:transform .1s,box-shadow .1s}
+.tile .go svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+html[dir="rtl"] .tile .go svg{transform:scaleX(-1)}
+.tile .count{position:absolute;top:14px;inset-inline-start:14px;transform:translateZ(14px);color:var(--cream);background:rgba(18,11,7,.75);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.tile:hover{box-shadow:0 10px 0 #0B0705,0 28px 50px rgba(0,0,0,.6),0 0 0 1px rgba(232,163,61,.45)}
+.tile:hover .ph img{transform:scale(1.1)}
+.tile:hover .shine{opacity:1}
+.tile:active{transform:rotateX(var(--rx)) rotateY(var(--ry)) translateY(2px);box-shadow:0 1px 0 #0B0705,0 8px 18px rgba(0,0,0,.55),0 0 0 1px var(--line)}
+.tile:active .go{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 var(--gold-deep),0 3px 8px rgba(0,0,0,.5)}
+@media (max-width:520px){.tile .cap{inset-inline:12px;bottom:12px}.tile:not(.feat) .sub,.tile:not(.feat) .lbl{display:none}.tile .go{width:34px;height:34px}.tile .go svg{width:17px;height:17px}.tile .count{top:10px;inset-inline-start:10px;font-size:11px}}
+
+/* ---------- category view ---------- */
+.banner{position:relative;height:clamp(220px,40vw,340px);overflow:hidden}
+.banner img{width:100%;height:100%;object-fit:cover;display:block}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,11,7,.25),rgba(18,11,7,.55) 55%,var(--night) 100%)}
+.banner .in{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;justify-content:space-between;padding-block:16px 22px}
+.banner h2{margin:0;font-size:clamp(32px,7vw,54px);line-height:1.1;text-shadow:0 4px 20px rgba(0,0,0,.6)}
+.banner p{margin:4px 0 0;color:var(--muted)}
+.back{align-self:flex-start;padding:10px 16px;font-size:14px}
+html[dir="rtl"] .back svg{transform:scaleX(-1)}
+.back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.pills{display:flex;gap:8px;overflow-x:auto;padding-block:16px 4px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pills a{flex:0 0 auto;text-decoration:none;color:var(--muted);font-weight:700;font-size:14px;padding:8px 16px;border-radius:999px;background:var(--ember);border:1px solid var(--line)}
+.pills a[aria-current="true"]{color:var(--on-gold);background:linear-gradient(180deg,var(--gold-hi),var(--gold));border-color:transparent;box-shadow:0 3px 0 var(--gold-deep)}
+.dishes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding-block:18px 10px}
+@media (max-width:700px){.dishes{grid-template-columns:1fr}}
+.dish{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 16px;border-radius:16px;
+  background:linear-gradient(180deg,var(--ember),var(--espresso));box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 0 1px var(--line),0 8px 18px rgba(0,0,0,.35);min-width:0}
+.dish .t{min-width:0}
+.dish h3{margin:0;font-size:17px;font-weight:700;line-height:1.35}
+.dish .alt{font-size:12.5px;color:var(--muted);margin-top:2px}
+.dish .pr{margin-top:8px;color:var(--gold-hi);font-weight:800;font-size:16px}
+.dish .pr small{font-size:12px;color:var(--muted);font-weight:700}
+.qty{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+.qty b{min-width:20px;text-align:center;font-size:17px}
+.qty .b3.round{width:40px;height:40px;font-size:20px}
+
+.foot{padding-block:36px 12px;color:var(--muted);font-size:14px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.foot .wa{color:var(--cream);font-weight:800}
+
+/* ---------- cart bar + sheet ---------- */
+.bar{visibility:hidden;position:fixed;left:0;right:0;bottom:0;z-index:25;padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));padding-top:12px;transform:translateY(130%);transition:transform .25s ease;
+  background:linear-gradient(180deg,rgba(18,11,7,0),rgba(18,11,7,.95) 35%)}
+.bar.show{transform:none;visibility:visible}
+.bar .b3{width:100%;justify-content:space-between;padding:15px 20px;font-size:16px;border-radius:16px}
+.bar .in{max-width:640px}
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(5,3,2,.7);display:flex;align-items:flex-end;justify-content:center}
+.sheet .box{background:var(--espresso);width:100%;max-width:620px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;border-top:1px solid var(--line);
+  padding:22px max(16px,env(safe-area-inset-right,0px)) calc(22px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.sheet h3{margin:0;font-size:24px;display:flex;justify-content:space-between;align-items:center}
+.lines{display:flex;flex-direction:column;gap:10px}
+.ln{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.ln .q{display:flex;align-items:center;gap:8px}
+.ln .b3.round{width:30px;height:30px;font-size:16px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:13px;color:var(--muted);font-weight:700}
+.f input,.f select,.f textarea{background:var(--ember);border:1px solid var(--line);border-radius:12px;padding:12px;width:100%;box-shadow:inset 0 2px 4px rgba(0,0,0,.35)}
+.sum{background:var(--ember);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.sum div{display:flex;justify-content:space-between}
+.sum .t{font-weight:800;font-size:19px;border-top:1px solid var(--line);padding-top:8px;margin-top:2px;color:var(--gold-hi)}
+.send{width:100%;padding:16px;font-size:17px;border-radius:16px}
+.note{font-size:13px;color:var(--muted)}
+.err{color:var(--rust);font-size:13px;font-weight:700}
+
+@media (prefers-reduced-motion:reduce){
+  .tile,.tile .ph img,.bar,.b3{transition:none}
+  .embers{display:none}
+}
+</style>
+
+<header class="top"><div class="in">
+  <a href="#" aria-label="Crunchy & More" id="home"><img class="mono" src="img/logo.png" alt=""></a>
+  <div class="r">
+    <div class="lang" role="group" aria-label="Language">
+      <button id="l-ar" aria-pressed="true">ع</button><button id="l-en" aria-pressed="false">EN</button>
+    </div>
+    <button class="b3 cartbtn" id="cartTop"><span data-t="cart"></span><span class="dot num" id="dot" hidden>0</span></button>
+  </div>
+</div></header>
+
+<div id="vHome">
+  <section class="hero">
+    <div class="embers" id="embers"></div>
+    <div class="in">
+      <img class="logo" src="img/logo.png" alt="كرانشي ومور · Crunchy & More">
+      <h1 class="disp" data-h="heroT"></h1>
+      <div class="chips">
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.7"/><circle cx="17.5" cy="17.5" r="1.7"/></svg><span data-t="chipDel"></span></span>
+        <span class="chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-t="chipHours"></span></span>
+        <span class="chip"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg><span class="num">0776 659 9599</span></span>
+      </div>
+    </div>
+  </section>
+  <main class="in">
+    <div class="sec-h"><div><div class="eyebrow" data-t="eyebrow"></div><h2 class="disp" data-t="pick"></h2></div><p data-t="pickSub"></p></div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<div id="vCat" hidden>
+  <section class="banner"><img id="cImg" alt=""><div class="in">
+    <button class="b3 dark back" id="back"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg><span data-t="back"></span></button>
+    <div><div class="eyebrow" id="cEye"></div><h2 class="disp" id="cName"></h2><p id="cDesc"></p></div>
+  </div></section>
+  <div class="in">
+    <nav class="pills" id="pills" aria-label="Sections"></nav>
+    <div class="dishes" id="dishes"></div>
+  </div>
+</div>
+
+<div class="in foot">
+  <div data-t="foot1"></div>
+  <div><span data-t="foot2"></span> <span class="wa num">0776 659 9599</span></div>
+</div>
+
+<div class="bar" id="bar"><div class="in"><button class="b3" id="open"><span><span data-t="viewCart"></span> · <span class="num" id="bcount">0</span></span><span><span class="num" id="btotal">0</span> <span data-t="iqd"></span></span></button></div></div>
+
+<div class="sheet" id="sheet" hidden><div class="box" role="dialog" aria-modal="true" aria-labelledby="sh-t">
+  <h3 class="disp"><span id="sh-t" data-t="yourOrder"></span><button class="b3 dark round" id="close" aria-label="Close">×</button></h3>
+  <div class="lines" id="lines"></div>
+  <div class="f"><label for="nm" data-t="fName"></label><input id="nm" autocomplete="name"></div>
+  <div class="f"><label for="ph" data-t="fPhone"></label><input id="ph" inputmode="tel" class="num" placeholder="07xxxxxxxxx" autocomplete="tel"></div>
+  <div class="f"><label for="ar" data-t="fArea"></label><select id="ar"></select></div>
+  <div class="f"><label for="ad" data-t="fAddr"></label><input id="ad"></div>
+  <div class="f"><label for="nt" data-t="fNote"></label><textarea id="nt" rows="2"></textarea></div>
+  <div class="sum" id="sum"></div>
+  <div class="err" id="err" hidden></div>
+  <a class="b3 send" id="go" href="#" target="_blank" rel="noopener" aria-disabled="true" data-t="send"></a>
+  <div class="note" data-t="sendNote"></div>
+</div></div>
+
+<script>
+const WA="9647766599599";
+const META={"cats": [{"key": "كنتاكي", "slug": "chicken", "ar": "كنتاكي", "en": "Crispy Chicken", "dar": "مقرمش من برّه وطري من جوّه", "den": "Golden outside, juicy inside", "img": "img/chicken.jpg"}, {"key": "مقبلات", "slug": "fries", "ar": "مقبلات", "en": "Fries & Sides", "dar": "بطاطا مقرمشة بأحجام تكفي الكل", "den": "Crisp fries in every size", "img": "img/fries.jpg"}, {"key": "برگر", "slug": "burger", "ar": "برگر", "en": "Burgers", "dar": "لحم أو دجاج، دبل وجبن وفطر", "den": "Beef or chicken, stacked your way", "img": "img/burger.jpg"}, {"key": "بيتزا", "slug": "pizza", "ar": "بيتزا", "en": "Pizza", "dar": "وسط وعائلي، وأطراف محشية", "den": "Medium, family and stuffed crust", "img": "img/pizza.jpg"}, {"key": "صاج", "slug": "saj", "ar": "صاج", "en": "Saj Wraps", "dar": "عربي وإيطالي على الصاج", "den": "Arabic and Italian, off the saj", "img": "img/saj.jpg"}, {"key": "سندويش", "slug": "sandwich", "ar": "سندويشات", "en": "Sandwiches", "dar": "شاورما، سكالوب، زنجر وستيك", "den": "Shawarma, escalope, zinger, steak", "img": "img/sandwich.jpg"}, {"key": "مشروبات", "slug": "drinks", "ar": "مشروبات", "en": "Cold Drinks", "dar": "بارد ويا الوجبة", "den": "Ice-cold with every meal", "img": "img/drinks.jpg"}], "items": [{"id": "m01", "ar": "3 قطع كنتاكي", "en": "3-Piece Crispy Chicken", "c": "كنتاكي", "p": 8500}, {"id": "m02", "ar": "4 قطع كنتاكي", "en": "4-Piece Crispy Chicken", "c": "كنتاكي", "p": 12000}, {"id": "m03", "ar": "5 قطع كنتاكي", "en": "5-Piece Crispy Chicken", "c": "كنتاكي", "p": 14500}, {"id": "m04", "ar": "6 قطع كنتاكي", "en": "6-Piece Crispy Chicken", "c": "كنتاكي", "p": 17000}, {"id": "m05", "ar": "7 قطع كنتاكي", "en": "7-Piece Crispy Chicken", "c": "كنتاكي", "p": 19250}, {"id": "m06", "ar": "10 قطع كنتاكي", "en": "10-Piece Crispy Chicken", "c": "كنتاكي", "p": 25250}, {"id": "m07", "ar": "ريزو", "en": "Rizo Chicken & Rice", "c": "كنتاكي", "p": 6000}, {"id": "m08", "ar": "مقبلات صغير", "en": "Fries · Small", "c": "مقبلات", "p": 3750}, {"id": "m09", "ar": "مقبلات وسط", "en": "Fries · Medium", "c": "مقبلات", "p": 5000}, {"id": "m10", "ar": "مقبلات كبير", "en": "Fries · Large", "c": "مقبلات", "p": 6000}, {"id": "m11", "ar": "ببسي صغير", "en": "Pepsi · Small", "c": "مشروبات", "p": 750}, {"id": "m12", "ar": "ببسي كبير", "en": "Pepsi · Large", "c": "مشروبات", "p": 1000}, {"id": "m13", "ar": "سفن صغير", "en": "7UP · Small", "c": "مشروبات", "p": 750}, {"id": "m14", "ar": "سفن كبير", "en": "7UP · Large", "c": "مشروبات", "p": 1000}, {"id": "m15", "ar": "ميراندا صغير", "en": "Mirinda · Small", "c": "مشروبات", "p": 750}, {"id": "m16", "ar": "ميراندا كبير", "en": "Mirinda · Large", "c": "مشروبات", "p": 1000}, {"id": "m17", "ar": "برگر لحم", "en": "Beef Burger", "c": "برگر", "p": 5000}, {"id": "m18", "ar": "برگر دجاج", "en": "Chicken Burger", "c": "برگر", "p": 5000}, {"id": "m19", "ar": "برگر لحم جبن", "en": "Beef Cheeseburger", "c": "برگر", "p": 5500}, {"id": "m20", "ar": "برگر دجاج جبن", "en": "Chicken Cheeseburger", "c": "برگر", "p": 5500}, {"id": "m21", "ar": "برگر لحم فطر", "en": "Beef Mushroom Burger", "c": "برگر", "p": 5500}, {"id": "m22", "ar": "برگر دجاج فطر", "en": "Chicken Mushroom Burger", "c": "برگر", "p": 5500}, {"id": "m23", "ar": "برگر لحم دبل", "en": "Double Beef Burger", "c": "برگر", "p": 6000}, {"id": "m24", "ar": "برگر دجاج دبل", "en": "Double Chicken Burger", "c": "برگر", "p": 6000}, {"id": "m25", "ar": "برگر لحم دبل جبن", "en": "Double Beef Cheeseburger", "c": "برگر", "p": 6750}, {"id": "m26", "ar": "برگر دجاج دبل جبن", "en": "Double Chicken Cheeseburger", "c": "برگر", "p": 6750}, {"id": "m27", "ar": "برگر لحم دبل جبن فطر", "en": "Double Beef Cheese & Mushroom", "c": "برگر", "p": 7250}, {"id": "m28", "ar": "برگر دجاج دبل جبن فطر", "en": "Double Chicken Cheese & Mushroom", "c": "برگر", "p": 7250}, {"id": "m29", "ar": "بيتزا لحم وسط", "en": "Beef Pizza · Medium", "c": "بيتزا", "p": 12000}, {"id": "m30", "ar": "بيتزا دجاج وسط", "en": "Chicken Pizza · Medium", "c": "بيتزا", "p": 12000}, {"id": "m31", "ar": "بيتزا مشكل وسط", "en": "Mixed Pizza · Medium", "c": "بيتزا", "p": 12000}, {"id": "m32", "ar": "بيتزا خضار وسط", "en": "Veggie Pizza · Medium", "c": "بيتزا", "p": 12000}, {"id": "m33", "ar": "بيتزا لحم عائلي", "en": "Beef Pizza · Family", "c": "بيتزا", "p": 18000}, {"id": "m34", "ar": "بيتزا دجاج عائلي", "en": "Chicken Pizza · Family", "c": "بيتزا", "p": 18000}, {"id": "m35", "ar": "بيتزا خضار عائلي", "en": "Veggie Pizza · Family", "c": "بيتزا", "p": 18000}, {"id": "m36", "ar": "بيتزا مشكل عائلي", "en": "Mixed Pizza · Family", "c": "بيتزا", "p": 18000}, {"id": "m37", "ar": "بيتزا أمريكي محشية الأطراف وسط", "en": "American Stuffed Crust · Medium", "c": "بيتزا", "p": 15750}, {"id": "m38", "ar": "بيتزا أمريكي محشية الأطراف عائلي", "en": "American Stuffed Crust · Family", "c": "بيتزا", "p": 20500}, {"id": "m39", "ar": "صاج لحم عربي", "en": "Arabic Beef Saj", "c": "صاج", "p": 6000}, {"id": "m40", "ar": "صاج دجاج عربي", "en": "Arabic Chicken Saj", "c": "صاج", "p": 6000}, {"id": "m41", "ar": "صاج إيطالي لحم", "en": "Italian Beef Saj", "c": "صاج", "p": 8500}, {"id": "m42", "ar": "صاج إيطالي مشكل", "en": "Italian Mixed Saj", "c": "صاج", "p": 8500}, {"id": "m43", "ar": "صاج لحم عربي سبايس بالجبن", "en": "Spicy Arabic Beef Saj with Cheese", "c": "صاج", "p": 7250}, {"id": "m44", "ar": "صاج دجاج عربي سبايس", "en": "Spicy Arabic Chicken Saj", "c": "صاج", "p": 7250}, {"id": "m45", "ar": "صاج إيطالي دجاج", "en": "Italian Chicken Saj", "c": "صاج", "p": 8500}, {"id": "m46", "ar": "سندويش شاورما لحم", "en": "Beef Shawarma Sandwich", "c": "سندويش", "p": 5000}, {"id": "m47", "ar": "سندويش شاورما دجاج", "en": "Chicken Shawarma Sandwich", "c": "سندويش", "p": 5000}, {"id": "m48", "ar": "سندويش سكالوب دجاج", "en": "Chicken Escalope Sandwich", "c": "سندويش", "p": 6000}, {"id": "m49", "ar": "سندويش سكالوب دجاج بالجبن", "en": "Chicken Escalope with Cheese", "c": "سندويش", "p": 6750}, {"id": "m50", "ar": "سندويش سكالوب لحم", "en": "Beef Escalope Sandwich", "c": "سندويش", "p": 6000}, {"id": "m51", "ar": "سندويش سكالوب لحم بالجبن", "en": "Beef Escalope with Cheese", "c": "سندويش", "p": 6750}, {"id": "m52", "ar": "سندويش زنجر", "en": "Zinger Sandwich", "c": "سندويش", "p": 6000}, {"id": "m53", "ar": "سندويش فاهيتا", "en": "Fajita Sandwich", "c": "سندويش", "p": 6000}, {"id": "m54", "ar": "سندويش فلاديفيا", "en": "Philly Sandwich", "c": "سندويش", "p": 6000}, {"id": "m55", "ar": "سندويش ستيك لحم", "en": "Beef Steak Sandwich", "c": "سندويش", "p": 6000}, {"id": "m56", "ar": "سندويش ستيك دجاج", "en": "Chicken Steak Sandwich", "c": "سندويش", "p": 5500}], "areas": [{"ar": "الاعلام", "en": "Al-I'lam", "f": 1000}, {"ar": "الرساله 3", "en": "Al-Risala 3", "f": 1000}, {"ar": "الرساله 2", "en": "Al-Risala 2", "f": 1000}, {"ar": "الرساله 1", "en": "Al-Risala 1", "f": 2000}, {"ar": "مجمع 6", "en": "Complex 6", "f": 1000}, {"ar": "الشرطه 4", "en": "Al-Shurta 4", "f": 1000}, {"ar": "الشرطه 5", "en": "Al-Shurta 5", "f": 2000}, {"ar": "مواصلات", "en": "Muwasalat", "f": 1000}, {"ar": "دوانم", "en": "Al-Dawanim", "f": 2000}, {"ar": "معالف", "en": "Al-Ma'alif", "f": 2000}, {"ar": "تراث", "en": "Al-Turath", "f": 2000}, {"ar": "السيدية", "en": "Al-Saydiya", "f": 2000}, {"ar": "بياع", "en": "Al-Bayaa", "f": 2000}, {"ar": "الكفائات", "en": "Al-Kafa'at", "f": 2000}, {"ar": "حي العامل", "en": "Hay Al-Amil", "f": 3000}, {"ar": "حي جهاد", "en": "Hay Al-Jihad", "f": 4000}, {"ar": "سويب", "en": "Al-Suwaib", "f": 3000}, {"ar": "جادريه", "en": "Al-Jadriya", "f": 5000}, {"ar": "المهديه", "en": "Al-Mahdiya", "f": 4000}, {"ar": "العمداء", "en": "Al-Umadaa", "f": 1000}, {"ar": "حي صدام", "en": "Hay Saddam", "f": 3000}]};
+let D={cats:META.cats.slice(),items:META.items.slice(),areas:META.areas.slice()};
+const T={
+ ar:{cart:"السلة",heroT:"قرمشة <em>تستاهل</em> الانتظار، توصلك لباب البيت",chipDel:"مطبخ سحابي · توصيل فقط",chipHours:"يومياً 12 الظهر – 1 بالليل",
+   eyebrow:"المنيو",pick:"اختار قسمك",pickSub:"اضغط على أي قسم حتى تشوف أطباقه وأسعاره",items:"صنف",from:"يبدأ من",back:"الأقسام",iqd:"د.ع",
+   viewCart:"شوف طلبك",yourOrder:"طلبك",fName:"الاسم",fPhone:"رقم الموبايل",fArea:"المنطقة",fAddr:"العنوان بالتفصيل",fNote:"ملاحظات",
+   addrPh:"الشارع، رقم البيت، أقرب نقطة دالة",notePh:"بدون مخلل، حار زيادة",pickArea:"اختار منطقتك",food:"الأكل",delivery:"التوصيل",total:"المجموع",
+   chooseArea:"اختار المنطقة",empty:"السلة فارغة. ارجع للمنيو وأضف أكلك.",send:"أرسل الطلب على واتساب",
+   sendNote:"ينفتح واتساب ويا رسالة الطلب جاهزة. اضغط إرسال، والموظف يأكدلك الطلب ووقت الوصول.",
+   foot1:"كرانشي ومور مطبخ سحابي: ما عدنا صالة، نطبخ ونوصل لمناطق محددة ببغداد.",foot2:"للطلب واتساب أو اتصال:",
+   add:"أضف",less:"قلّل",soon:"الطلب عبر واتساب يتفعل قريباً.",need:"كمّل الاسم والرقم والمنطقة والعنوان حتى ينفتح زر الإرسال."},
+ en:{cart:"Cart",heroT:"Crunch <em>worth</em> the wait, delivered to your door",chipDel:"Cloud kitchen · Delivery only",chipHours:"Daily 12 PM – 1 AM",
+   eyebrow:"The Menu",pick:"Choose a section",pickSub:"Tap a section to see its dishes and prices",items:"items",from:"From",back:"Sections",iqd:"IQD",
+   viewCart:"View order",yourOrder:"Your order",fName:"Name",fPhone:"Mobile number",fArea:"Area",fAddr:"Full address",fNote:"Notes",
+   addrPh:"Street, house number, nearest landmark",notePh:"No pickles, extra spicy",pickArea:"Choose your area",food:"Food",delivery:"Delivery",total:"Total",
+   chooseArea:"Choose area",empty:"Your cart is empty. Head back to the menu and add something.",send:"Send order on WhatsApp",
+   sendNote:"WhatsApp opens with your order typed in. Tap send and our team confirms the order and delivery time.",
+   foot1:"Crunchy & More is a cloud kitchen: no dine-in, we cook and deliver to selected Baghdad areas.",foot2:"Order by WhatsApp or call:",
+   add:"Add",less:"Remove one",soon:"WhatsApp ordering opens soon.",need:"Fill in name, number, area and address to send."}
+};
+const $=s=>document.querySelector(s);
+const fmt=n=>Math.round(n).toLocaleString("en-US");
+const h=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let L="ar";try{if(localStorage.getItem("cm-lang")==="en")L="en"}catch(_){}
+const t=k=>T[L][k];
+const cart={};
+const byCat=k=>D.items.filter(i=>i.c===k);
+const catBySlug=s=>D.cats.find(c=>c.slug===s);
+
+const arrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+function renderGrid(){
+  $("#grid").innerHTML=D.cats.map(c=>{const its=byCat(c.key),min=Math.min(...its.map(i=>i.p));
+    return `<a class="tile${c===D.cats[0]?" feat":""}" href="#cat-${c.slug}" data-slug="${c.slug}" aria-label="${h(c[L])}">
+      <span class="ph"><img src="${c.img}" alt="" loading="lazy"></span><span class="shine"></span>
+      <span class="count"><span class="num">${its.length}</span> ${t("items")}</span>
+      <span class="cap"><span class="nm disp">${h(c[L])}</span><span class="sub">${h(L==="ar"?c.dar:c.den)}</span>
+      <span class="row"><span class="from"><span class="lbl">${t("from")}</span> <b class="num">${fmt(min)}</b> ${t("iqd")}</span><span class="go">${arrow}</span></span></span></a>`}).join("");
+  bindTilt();
+}
+function bindTilt(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches||matchMedia("(hover: none)").matches)return;
+  document.querySelectorAll(".tile").forEach(el=>{
+    el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+      el.style.setProperty("--ry",((x-.5)*14).toFixed(2)+"deg");el.style.setProperty("--rx",((.5-y)*12).toFixed(2)+"deg");
+      el.style.setProperty("--mx",(x*100).toFixed(1)+"%");el.style.setProperty("--my",(y*100).toFixed(1)+"%")});
+    el.addEventListener("pointerleave",()=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")});
+  });
+}
+function qtyHtml(i){const q=cart[i.id]||0;
+  return `<div class="qty">${q?`<button class="b3 dark round" data-sub="${i.id}" aria-label="${t("less")} ${h(i[L])}">−</button><b class="num">${q}</b>`:""}<button class="b3 round" data-add="${i.id}" aria-label="${t("add")} ${h(i[L])}">+</button></div>`}
+function renderCat(slug){
+  const c=catBySlug(slug);if(!c)return showHome();
+  $("#cImg").src=c.img;$("#cName").textContent=c[L];$("#cEye").textContent=L==="ar"?c.en:c.ar;$("#cDesc").textContent=L==="ar"?c.dar:c.den;
+  $("#pills").innerHTML=D.cats.map(x=>`<a href="#cat-${x.slug}" aria-current="${x.slug===slug}">${h(x[L])}</a>`).join("");
+  $("#dishes").innerHTML=byCat(c.key).map(i=>`<div class="dish"><div class="t"><h3>${h(i[L])}</h3><div class="alt">${h(L==="ar"?i.en:i.ar)}</div>
+    <div class="pr"><span class="num">${fmt(i.p)}</span> <small>${t("iqd")}</small></div></div>${qtyHtml(i)}</div>`).join("");
+  const cur=$("#pills [aria-current=true]");if(cur)cur.scrollIntoView({block:"nearest",inline:"center"});
+}
+function showHome(){$("#vHome").hidden=false;$("#vCat").hidden=true}
+function route(){
+  const m=location.hash.match(/^#cat-([a-z]+)$/);
+  if(m&&catBySlug(m[1])){$("#vHome").hidden=true;$("#vCat").hidden=false;renderCat(m[1]);window.scrollTo(0,0)}
+  else showHome();
+}
+const lines=()=>Object.entries(cart).filter(([,q])=>q>0).map(([id,q])=>({...D.items.find(i=>i.id===id),q}));
+const sub=()=>lines().reduce((a,l)=>a+l.p*l.q,0);
+function renderBar(){const ls=lines(),n=ls.reduce((a,l)=>a+l.q,0);$("#bcount").textContent=n;$("#btotal").textContent=fmt(sub());
+  $("#bar").classList.toggle("show",n>0&&$("#sheet").hidden);const d=$("#dot");d.hidden=!n;d.textContent=n}
+function fee(){const a=D.areas.find(a=>a.ar===$("#ar").value);return a?a.f:null}
+function renderSheet(){
+  const ls=lines();
+  $("#lines").innerHTML=ls.map(l=>`<div class="ln"><span>${h(l[L])}<br><span class="note"><span class="num">${fmt(l.p)}</span> ${t("iqd")}</span></span>
+    <span class="q"><button class="b3 dark round" data-sub="${l.id}" aria-label="${t("less")}">−</button><b class="num">${l.q}</b><button class="b3 round" data-add="${l.id}" aria-label="${t("add")}">+</button></span></div>`).join("")||`<div class="note">${t("empty")}</div>`;
+  const f=fee(),s=sub();
+  $("#sum").innerHTML=`<div><span>${t("food")}</span><span><span class="num">${fmt(s)}</span> ${t("iqd")}</span></div><div><span>${t("delivery")}</span><span>${f==null?t("chooseArea"):`<span class="num">${fmt(f)}</span> ${t("iqd")}`}</span></div><div class="t"><span>${t("total")}</span><span><span class="num">${fmt(s+(f||0))}</span> ${t("iqd")}</span></div>`;
+  updateLink();
+}
+const digits=p=>String(p).replace(/\D/g,"");
+function updateLink(){
+  const ls=lines(),nm=$("#nm").value.trim(),ph=digits($("#ph").value),ar=$("#ar").value,ad=$("#ad").value.trim();
+  const ok=ls.length&&nm&&ph.length>=10&&ar&&ad&&WA;
+  const go=$("#go");go.setAttribute("aria-disabled",ok?"false":"true");
+  const e=$("#err");
+  if(!WA){e.hidden=false;e.textContent=t("soon")}else if(ls.length&&!ok){e.hidden=false;e.textContent=t("need")}else e.hidden=true;
+  if(!ok){go.href="#";return}
+  const f=fee(),s=sub();
+  const msg=["طلب جديد من المنيو 🍗"+(L==="en"?" (EN)":""),"",...ls.map(l=>`• ${l.ar} ×${l.q} = ${fmt(l.p*l.q)} د.ع`),"",`الأكل: ${fmt(s)} د.ع`,`التوصيل (${ar}): ${fmt(f)} د.ع`,`المجموع: ${fmt(s+f)} د.ع`,"",`الاسم: ${nm}`,`الموبايل: ${$("#ph").value.trim()}`,`المنطقة: ${ar}`,`العنوان: ${ad}`,...($("#nt").value.trim()?[`ملاحظات: ${$("#nt").value.trim()}`]:[])].join("\n");
+  go.href=`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+}
+function renderAreas(){const v=$("#ar").value;
+  $("#ar").innerHTML=`<option value="">${t("pickArea")}</option>`+D.areas.map(a=>`<option value="${h(a.ar)}">${h(a[L])} · ${fmt(a.f)} ${t("iqd")}</option>`).join("");$("#ar").value=v}
+function applyLang(){
+  document.documentElement.lang=L;document.documentElement.dir=L==="ar"?"rtl":"ltr";document.title=L==="ar"?"منيو كرانشي ومور":"Crunchy & More Menu";
+  $("#l-ar").setAttribute("aria-pressed",L==="ar");$("#l-en").setAttribute("aria-pressed",L==="en");
+  document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
+  document.querySelectorAll("[data-h]").forEach(el=>el.innerHTML=t(el.dataset.h));
+  $("#ad").placeholder=t("addrPh");$("#nt").placeholder=t("notePh");
+  renderGrid();renderAreas();if(!$("#vCat").hidden)renderCat(location.hash.slice(5));if(!$("#sheet").hidden)renderSheet();renderBar();
+}
+function setLang(l){L=l;try{localStorage.setItem("cm-lang",l)}catch(_){}applyLang()}
+function rerender(){if(!$("#vCat").hidden)renderCat(location.hash.slice(5));if(!$("#sheet").hidden)renderSheet();renderBar()}
+function openSheet(){$("#sheet").hidden=false;renderSheet();renderBar()}
+function closeSheet(){$("#sheet").hidden=true;renderBar()}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.add){cart[b.dataset.add]=(cart[b.dataset.add]||0)+1;rerender()}
+  else if(b.dataset.sub){cart[b.dataset.sub]--;if(cart[b.dataset.sub]<=0)delete cart[b.dataset.sub];rerender()}
+  else if(b.id==="open"||b.id==="cartTop")openSheet();
+  else if(b.id==="close")closeSheet();
+  else if(b.id==="back")location.hash="";
+  else if(b.id==="l-ar")setLang("ar");else if(b.id==="l-en")setLang("en");
+});
+$("#home").addEventListener("click",e=>{e.preventDefault();location.hash=""});
+$("#sheet").addEventListener("click",e=>{if(e.target.id==="sheet")closeSheet()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#sheet").hidden)closeSheet()});
+["nm","ph","ad","nt"].forEach(id=>$("#"+id).addEventListener("input",updateLink));
+$("#ar").addEventListener("change",renderSheet);
+$("#go").addEventListener("click",()=>{try{localStorage.setItem("cm-cust",JSON.stringify({nm:$("#nm").value,ph:$("#ph").value,ar:$("#ar").value,ad:$("#ad").value}))}catch(_){}});
+window.addEventListener("hashchange",route);
+// embers
+(()=>{const box=$("#embers");for(let i=0;i<14;i++){const e=document.createElement("i");e.style.left=(5+Math.random()*90)+"%";e.style.animationDelay=(Math.random()*7).toFixed(2)+"s";e.style.animationDuration=(5+Math.random()*4).toFixed(2)+"s";box.appendChild(e)}})();
+// live menu: prices, availability and delivery areas come from the restaurant system
+async function loadLive(){
+  try{const C=window.CRUNCHY_CONFIG;if(!C)return;
+    const r=await fetch(C.supabaseUrl+"/rest/v1/rpc/public_menu",{method:"POST",headers:{apikey:C.supabaseKey,"Content-Type":"application/json"},body:"{}",cache:"no-store"});
+    if(!r.ok)return;const j=await r.json();if(!j||!Array.isArray(j.items)||!j.items.length)return;
+    const en=Object.fromEntries(META.items.map(i=>[i.id,i.en]));const aen=Object.fromEntries(META.areas.map(a=>[a.ar,a.en]));
+    D.items=j.items.map(i=>({id:i.id,ar:i.name,en:en[i.id]||i.name,c:i.cat,p:+i.price||0}));
+    const known=META.cats.filter(c=>D.items.some(i=>i.c===c.key));let x=0;
+    const extra=[...new Set(D.items.map(i=>i.c))].filter(k=>!META.cats.some(c=>c.key===k)).map(k=>({key:k,slug:"more"+String.fromCharCode(97+(x++)),ar:k,en:k,dar:"",den:"",img:META.cats[0].img}));
+    D.cats=known.concat(extra);
+    if(Array.isArray(j.areas)&&j.areas.length)D.areas=j.areas.map(a=>({ar:a.name,en:aen[a.name]||a.name,f:+a.fee||0}));
+    for(const id of Object.keys(cart))if(!D.items.some(i=>i.id===id))delete cart[id];
+    applyLang();route();
+  }catch(_){}
+}
+applyLang();
+try{const s=JSON.parse(localStorage.getItem("cm-cust")||"{}");["nm","ph","ad"].forEach(k=>{if(s[k])$("#"+k).value=s[k]});if(s.ar)$("#ar").value=s.ar}catch(_){}
+route();
+loadLive();
+</script>
+
+</body></html>

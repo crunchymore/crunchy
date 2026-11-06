@@ -1,5 +1,6 @@
 /* ---------- events ---------- */
 document.addEventListener("click",async e=>{
+  {const cm=e.target.closest("[data-copy-menu]");if(cm){const u=menuLink();let ok=false;try{await navigator.clipboard.writeText(u);ok=true}catch(_){try{const ta=document.createElement("textarea");ta.value=u;document.body.appendChild(ta);ta.select();ok=document.execCommand("copy");ta.remove()}catch(_){}}toast(ok?"انتسخ رابط المنيو ✓":u);return}}
   {const b=e.target.closest("[data-print],[data-backup],[data-prn-w],[data-prn-test],[data-aif]");if(b){const d=b.dataset;
     if(d.print!==undefined){const o=findOrder(d.print);if(o)printOrder(o,d.pk||"receipt");return}
     if(d.backup!==undefined){downloadBackup();return}

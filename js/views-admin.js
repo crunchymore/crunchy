@@ -212,8 +212,15 @@ function renderSetup(){
       <div class="field"><label class="label" for="late">الطلب يعتبر متأخر بعد (دقيقة)</label><input id="late" type="number" min="5" step="5" value="${S.settings.lateMins||35}"></div></div>
     <div class="row" style="margin-top:12px"><div class="field"><label class="label" for="dpct">زيادة السعر المباشر فوق سعر صديقك %</label><input id="dpct" type="number" min="0" step="1" value="${S.settings.directPct??20}"></div>
       <div class="field"><label class="label" for="apct">زيادة سعر التطبيقات %</label><input id="apct" type="number" min="0" step="1" value="${S.settings.appPct??40}"></div></div></div>
+  ${menuPanel()}
   ${backupPanel()}`;
 }
+function menuLink(){return new URL("menu/",location.href.split("#")[0]).href}
+function menuPanel(){const u=menuLink();
+  return `<div class="panel" style="max-width:720px"><h2>المنيو الإلكتروني للزبائن</h2>
+    <p class="note">الأصناف والأسعار ومناطق التوصيل تنقرا من هذا النظام مباشرة: أي سعر تغيّره، أو صنف توقفه، أو منطقة تضيفها، يطلع للزبون فوراً. الزبون يرسل طلبه على واتساب كرانشي.</p>
+    <p class="num" style="overflow-wrap:anywhere;font-weight:600">${h(u)}</p>
+    <div class="row"><a class="btn" href="${h(u)}" target="_blank" rel="noopener" style="flex:0 0 auto">افتح المنيو</a><button class="btn ghost" data-copy-menu style="flex:0 0 auto">نسخ الرابط</button></div></div>`}
 function backupPanel(){const last=+LS.get("crunchy.lastBackup")||0;const days=last?Math.floor((Date.now()-last)/864e5):null;
   return `<div class="panel" style="max-width:720px"><h2>النسخة الاحتياطية</h2>
     <p class="note">ينزل ملف واحد بيه كل بيانات المطعم: الطلبات والزباين والمنيو والوصفات والمخزن والموردين والمصاريف والموظفين. احفظه بمكان أمين (فلاشة، Google Drive) مرة بالأسبوع على الأقل.</p>

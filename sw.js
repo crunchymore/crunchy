@@ -3,7 +3,7 @@
    - pinned CDN libraries / fonts / images: cache-first
    - Supabase REST GET: network-first with cache fallback (cleared on logout)
    - Supabase auth, realtime and all writes: network only */
-const VERSION = "crunchy-v4";
+const VERSION = "crunchy-v5";
 const SHELL = VERSION + "-shell";
 const STATIC = VERSION + "-static";
 const API = "crunchy-api";
