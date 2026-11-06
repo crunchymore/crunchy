@@ -1,5 +1,11 @@
 /* ---------- events ---------- */
 document.addEventListener("click",async e=>{
+  {const b=e.target.closest("[data-print],[data-backup],[data-prn-w],[data-prn-test],[data-aif]");if(b){const d=b.dataset;
+    if(d.print!==undefined){const o=findOrder(d.print);if(o)printOrder(o,d.pk||"receipt");return}
+    if(d.backup!==undefined){downloadBackup();return}
+    if(d.prnW){prnSet({width:d.prnW});render();return}
+    if(d.prnTest!==undefined){printOrder({no:"0",ts:Date.now(),channel:"تجربة",items:[{qty:2,name:"3 قطع كنتاكي",price:8500},{qty:1,name:"ريزو",price:6000}],subtotal:23000,discount:0,revenue:23000,deliveryFee:4000,area:"الجادرية",customer:{name:"زبون تجريبي",phone:"07700000000",address:"قرب الجسر"},note:"بدون مخلل"},["receipt","kitchen"]);return}
+    if(d.aif!==undefined){S.aiF=d.aif;render();return}}}
   const t=e.target.closest("button,a[data-recgo],a#toSetup,a#toLogin,[data-close-bg]");if(!t)return;const d=t.dataset;
   /* modal + global */
   if(d.closeBg!==undefined){if(e.target===t)closeModal();return}
@@ -81,6 +87,8 @@ function recRefresh(){const m=S.menu.find(x=>x.id===S.recSel);const el=$("#recsu
 const MENU_COL={name:"name",cat:"cat",code:"code",price:"price",appPrice:"app_price",active:"active"};
 const INV_COL={name:"name",code:"code",unit:"unit",category:"category",minQty:"min_qty",active:"active"};
 document.addEventListener("change",async e=>{const t=e.target;const d=t.dataset;
+  if(d.prnOpt){prnSet({[d.prnOpt]:t.checked});toast(t.checked?"تفعّلت الطباعة التلقائية":"انطفت الطباعة التلقائية");return}
+  if(d.prnCopies!==undefined){prnSet({copies:+t.value});return}
   if(S.screen!=="app")return;
   if(t.id==="brsel"){S.branch=t.value;LS.set("crunchy.branch",t.value);S.trf=null;render();return}
   if(t.id==="farea"){S.f.area=t.value;render();return}
@@ -176,7 +184,8 @@ async function saveOrder(){
   const row=await write(()=>q(sb.from("orders").insert({branch_id:br,channel:S.channel,items:c.lines.map(l=>({mid:l.mid,qty:l.qty,name:l.name,price:l.price})),discount:c.discount,
     customer:{phone:key||"",name:S.f.name.trim(),address:S.f.address.trim()},area:c.own?S.f.area:"",note:S.f.note.trim()}).select().single()));
   S.saving=false;
-  if(row&&row.id){const o=mapOrder(row);upsertIn(S.today,o);if(has("owner manager"))upsertIn(S.orders,o);toast("انرسل الطلب للمطبخ · #"+o.no);resetOrder();if(key)load("customers")}
+  if(row&&row.id){const o=mapOrder(row);upsertIn(S.today,o);if(has("owner manager"))upsertIn(S.orders,o);toast("انرسل الطلب للمطبخ · #"+o.no);resetOrder();if(key)load("customers");
+    const pc=prnCfg();const k=[];if(pc.autoReceipt)k.push("receipt");if(pc.autoKitchen)k.push("kitchen");if(k.length)printOrder(o,k)}
   render();
 }
 async function advance(id,next){

@@ -38,6 +38,7 @@ const DB={
   async costs(){const m={};for(const r of await q(sb.from("menu_costs").select("*").order("valid_from",{ascending:true})))(m[r.menu_id]||(m[r.menu_id]=[])).push({ts:tsOf(r.valid_from),c:+r.cost||0});S.costRows=m},
   async expenses(){const [a,b]=range(S.month);S.expenses=(await q(sb.from("expenses").select("*").gte("spent_at",new Date(a).toISOString()).lt("spent_at",new Date(b).toISOString()))).map(e=>({id:e.id,amount:+e.amount||0,note:e.note,ts:tsOf(e.spent_at)}))},
   async payments(){const [a,b]=range(S.month);S.payments=(await q(sb.from("friend_payments").select("*").gte("paid_at",new Date(a).toISOString()).lt("paid_at",new Date(b).toISOString()))).map(e=>({id:e.id,amount:+e.amount||0,note:e.note,ts:tsOf(e.paid_at)}))},
+  async ai(){S.ai=await q(sb.from("ai_notes").select("*").order("created_at",{ascending:false}).limit(60));S.aiLoaded=true},
   async staff(){S.staff=await q(sb.from("profiles").select("*").order("created_at",{ascending:true}))},
 };
 const has=roles=>roles.split(" ").includes(S.role);
@@ -76,6 +77,7 @@ function onOrderChange(p){
   const [a,b]=range(S.month);if(has("owner manager")&&o.ts>=a&&o.ts<b)upsertIn(S.orders,o);
   if(isNew&&o.by!==S.uid){
     const mine=o.branchId===curBranch();
+    if(mine&&prnCfg().autoKitchen)printOrder(o,"kitchen");
     if(S.role==="kitchen"||(view()==="kds"&&mine)){beep();toast("طلب جديد للمطبخ #"+o.no)}
     else if(has("owner manager")){beep();toast(`طلب جديد من ${o.channel||""} · ${fmt(o.revenue)} د.ع`)}
     else if(mine&&view()==="board")toast("طلب جديد #"+o.no);

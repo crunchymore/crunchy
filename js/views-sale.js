@@ -62,12 +62,13 @@ function renderBoard(){
       ${o.customer&&(o.customer.name||o.customer.phone)?`<div class="who">${h(o.customer.name||"")} <span class="num">${h(o.customer.phone||"")}</span>${o.area?` · <b>${h(o.area)}</b>`:""}${o.customer.address?` · ${h(o.customer.address)}`:""}</div>`:""}
       ${o.deliveryFee?`<div class="note">يستلم من الزبون: ${money((o.revenue||0)+(o.deliveryFee||0))} (ويا التوصيل)</div>`:""}
       <div class="row" style="margin-top:4px"><button class="btn dark sm" data-adv="${h(o.id)}" ${S.busy[o.id]?"disabled":""}>${NEXT_T[o.status]}</button>
+        <button class="btn ghost sm" data-print="${h(o.id)}" data-pk="receipt" style="flex:0" title="طباعة وصل الزبون">طباعة</button>
         ${!can("cancel")?"":S.confirmDel==="cx"+o.id?`<button class="btn danger sm" data-cxok="${h(o.id)}" style="flex:0">تأكيد الإلغاء</button>`:`<button class="btn ghost sm" data-askdel="cx${h(o.id)}" style="flex:0">إلغاء</button>`}</div></div>`}).join(""):`<div class="empty" style="padding:12px">ما كو</div>`}</div>`};
   const done=tb.filter(o=>o.status==="done"||o.status==="cancelled").sort((a,b)=>b.ts-a.ts);
   return `<div class="row" style="margin-bottom:12px;align-items:center"><h2 style="margin:0">طلبات اليوم${multi?" · "+h(brName(curBranch())):""}</h2><span class="note" style="flex:1 1 220px">الطلب اللي يتجاوز <span class="num">${late}</span> دقيقة يتلون أحمر</span></div>
   <div class="board">${col("new","جديد")}${col("prep","قيد التحضير")}${col("ready","جاهز")}${col("out","بالطريق")}</div>
   <div class="panel" style="margin-top:18px"><h3>اللي خلصت اليوم · <span class="num">${done.length}</span></h3>
-  ${done.length?`<div class="tbl-wrap"><table><tbody>${done.map(o=>`<tr class="${o.status==="cancelled"?"cx":""}"><td class="num">#${h(o.no)}</td><td class="num">${timeStr(o.ts)}</td><td>${h(o.channel)}</td><td>${itemsTxt(o)}</td><td>${money(o.revenue)}</td><td><span class="pill ${STATUS[o.status].c}">${STATUS[o.status].t}</span></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">بعد ما كو طلبات مسلمة اليوم</div>`}</div>`;
+  ${done.length?`<div class="tbl-wrap"><table><tbody>${done.map(o=>`<tr class="${o.status==="cancelled"?"cx":""}"><td class="num">#${h(o.no)}</td><td class="num">${timeStr(o.ts)}</td><td>${h(o.channel)}</td><td>${itemsTxt(o)}</td><td>${money(o.revenue)}</td><td><span class="pill ${STATUS[o.status].c}">${STATUS[o.status].t}</span></td><td><button class="btn ghost sm" data-print="${h(o.id)}" data-pk="receipt">طباعة</button></td></tr>`).join("")}</tbody></table></div>`:`<div class="empty">بعد ما كو طلبات مسلمة اليوم</div>`}</div>`;
 }
 
 /* ---------- customers ---------- */
@@ -94,6 +95,7 @@ function renderKDS(){
     <div class="note">${h(o.channel||"")} · <span class="num">${timeStr(o.ts)}</span></div>
     ${(o.items||[]).map(i=>`<div><div class="kl"><span class="num">${i.qty}×</span><span>${h(i.name)}</span></div>${recLine(i)}</div>`).join("")}
     ${o.note?`<div class="knote">ملاحظة: ${h(o.note)}</div>`:""}
+    <button class="btn ghost sm" data-print="${h(o.id)}" data-pk="kitchen" style="align-self:flex-start">طباعة التذكرة</button>
     ${o.status==="new"?`<button class="btn" data-kds="${h(o.id)}" data-to="prep" ${S.busy[o.id]?"disabled":""}>بدأ التحضير</button>`:`<button class="btn dark" data-kds="${h(o.id)}" data-to="ready" ${S.busy[o.id]?"disabled":""}>جاهز</button>`}
   </div>`}).join("")}</div>`:`<div class="panel empty">ما كو طلبات بالمطبخ هسه. الطلب الجديد يطلع هنا تلقائياً ويا صوت تنبيه.</div>`}
   ${ready.length?`<div class="panel" style="margin-top:18px"><h3>جاهزة بانتظار الاستلام · <span class="num">${ready.length}</span></h3><div class="cats">${ready.map(o=>`<span class="pill good num">#${h(o.no)}</span>`).join("")}</div></div>`:""}

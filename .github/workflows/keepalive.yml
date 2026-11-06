@@ -1,0 +1,32 @@
+# Keeps the free Supabase project awake: one tiny database query every day.
+name: keepalive
+on:
+  schedule:
+    - cron: "17 6 * * *"   # every day 09:17 Baghdad
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          URL=$(grep -o 'https://[a-z0-9]*\.supabase\.co' <(curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/config.js))
+          KEY=$(grep -o 'sb_publishable_[A-Za-z0-9_-]*' <(curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/main/config.js))
+          for i in 1 2 3; do
+            code=$(curl -s -o out.json -w '%{http_code}' -X POST "$URL/rest/v1/rpc/keepalive" -H "apikey: $KEY" -H "Content-Type: application/json" -d '{}')
+            cat out.json; echo " -> $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          exit 1
+      - uses: actions/checkout@v4
+      - name: Monthly heartbeat commit (stops GitHub from pausing this schedule)
+        if: ${{ github.event_name == 'schedule' }}
+        run: |
+          if [ "$(date -u +%d)" = "01" ]; then
+            date -u +%FT%TZ > .keepalive
+            git config user.name "crunchymore"; git config user.email "crunchymore99@gmail.com"
+            git add .keepalive && git commit -m "keepalive heartbeat" && git push || true
+          fi

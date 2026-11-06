@@ -211,7 +211,25 @@ function renderSetup(){
     <div class="row" style="margin-top:22px"><div class="field"><label class="label" for="pack">تغليف لكل طلب (د.ع)</label><input id="pack" type="number" min="0" step="50" value="${S.settings.packaging||0}"></div>
       <div class="field"><label class="label" for="late">الطلب يعتبر متأخر بعد (دقيقة)</label><input id="late" type="number" min="5" step="5" value="${S.settings.lateMins||35}"></div></div>
     <div class="row" style="margin-top:12px"><div class="field"><label class="label" for="dpct">زيادة السعر المباشر فوق سعر صديقك %</label><input id="dpct" type="number" min="0" step="1" value="${S.settings.directPct??20}"></div>
-      <div class="field"><label class="label" for="apct">زيادة سعر التطبيقات %</label><input id="apct" type="number" min="0" step="1" value="${S.settings.appPct??40}"></div></div></div>`;
+      <div class="field"><label class="label" for="apct">زيادة سعر التطبيقات %</label><input id="apct" type="number" min="0" step="1" value="${S.settings.appPct??40}"></div></div></div>
+  ${backupPanel()}`;
+}
+function backupPanel(){const last=+LS.get("crunchy.lastBackup")||0;const days=last?Math.floor((Date.now()-last)/864e5):null;
+  return `<div class="panel" style="max-width:720px"><h2>النسخة الاحتياطية</h2>
+    <p class="note">ينزل ملف واحد بيه كل بيانات المطعم: الطلبات والزباين والمنيو والوصفات والمخزن والموردين والمصاريف والموظفين. احفظه بمكان أمين (فلاشة، Google Drive) مرة بالأسبوع على الأقل.</p>
+    <p class="note">${last?`آخر نسخة من هذا الجهاز: <b class="num">${dateStr(last)}</b>${days>=7?` <span class="pill bad">صار لها ${days} يوم</span>`:""}`:"ما نزلت نسخة من هذا الجهاز بعد."}</p>
+    <button class="btn" data-backup ${S.backingUp?"disabled":""}>${S.backingUp?"جاري تجهيز النسخة…":"تنزيل نسخة احتياطية"}</button></div>`}
+
+/* ---------- AI staff reports ---------- */
+const AI_KIND={report:"تقرير يومي",review:"مراجعة الأسبوع",content:"محتوى الأسبوع",stock:"المخزون",orders:"الطلبات",note:"ملاحظة"};
+function renderAI(){
+  if(!S.aiLoaded&&!S.aiLoading){S.aiLoading=true;load("ai").then(()=>{S.aiLoading=false;renderSafe()})}
+  const list=S.ai||[];const f=S.aiF||"";const shown=f?list.filter(n=>n.kind===f):list;
+  return `<div class="panel"><h2>الموظفين الأذكياء</h2>
+    <p class="note">هنا تنحفظ تقارير ومخططات موظفين الذكاء الاصطناعي: التقرير اليومي، مراجعة الأسبوع، محتوى الأسبوع، وتنبيهات المخزون. يشتغلون من حساب المالك بالمتصفح الداخلي بحاسوبك، فخلي الحاسوب شغال وحساب المالك مسجّل دخول هناك.</p>
+    <div class="cats"><button class="chip" data-aif="" aria-pressed="${!f}">الكل</button>${Object.entries(AI_KIND).map(([k,t])=>`<button class="chip" data-aif="${k}" aria-pressed="${f===k}">${t}</button>`).join("")}</div>
+    ${!S.aiLoaded?`<div class="empty">جاري التحميل…</div>`:shown.length?`<div class="cards">${shown.map(n=>`<details class="scard"${n===shown[0]?" open":""}><summary class="hd" style="cursor:pointer"><b>${h(n.title||AI_KIND[n.kind]||"")}</b><span class="note"><span class="pill">${h(AI_KIND[n.kind]||n.kind)}</span> <span class="num">${dateStr(tsOf(n.created_at))} ${timeStr(tsOf(n.created_at))}</span></span></summary>
+      <div style="white-space:pre-wrap;font-size:14px">${h(n.body||"")}</div></details>`).join("")}</div>`:`<div class="empty">ما كو تقارير بعد. أول تقرير ينزل الليلة بعد الساعة 11.</div>`}</div>`;
 }
 
 /* ---------- account (all roles) ---------- */
@@ -223,10 +241,20 @@ function renderAccount(){
     <form id="myPwF" class="cards" novalidate>${pwField("myPw1","كلمة السر الجديدة (8 أحرف أو أكثر)","new-password")}${pwField("myPw2","أعد كلمة السر","new-password")}<button class="btn">حفظ كلمة السر</button></form>
     <h3 style="margin-top:20px">المظهر</h3>
     <div class="seg"><button data-theme-set="auto" aria-pressed="${th==="auto"}">حسب الجهاز</button><button data-theme-set="light" aria-pressed="${th==="light"}">فاتح</button><button data-theme-set="dark" aria-pressed="${th==="dark"}">داكن</button></div>
+    ${printPanel()}
     <div class="row" style="margin-top:20px"><button class="btn ghost" data-install-help>طريقة تثبيت التطبيق</button><button class="btn danger" data-logout>تسجيل خروج</button></div></div>
     <div class="panel"><h3>عن التطبيق</h3><p class="note">نظام كرانشي ومور يشتغل من المتصفح ويتثبت مثل تطبيق على الموبايل والكمبيوتر. يحتاج إنترنت حتى يسجل الطلبات ويحدّث الشاشات.</p>
       <p class="note">رابط التطبيق: <span class="num" style="overflow-wrap:anywhere">${h(appLink())}</span></p></div></div>`;
 }
+
+function printPanel(){const c=prnCfg();
+  return `<h3 style="margin-top:20px">الطباعة بهذا الجهاز</h3>
+    <p class="note">للطابعة الحرارية المربوطة بهذا الجهاز. كل جهاز إله إعداده.</p>
+    <div class="seg" role="group" aria-label="عرض الورق"><button data-prn-w="80" aria-pressed="${c.width==="80"}">ورق 80 ملم</button><button data-prn-w="58" aria-pressed="${c.width==="58"}">ورق 58 ملم</button></div>
+    <label class="chk" style="margin-top:10px"><input type="checkbox" data-prn-opt="autoReceipt" ${c.autoReceipt?"checked":""}> اطبع وصل الزبون تلقائياً بعد تسجيل الطلب</label>
+    <label class="chk"><input type="checkbox" data-prn-opt="autoKitchen" ${c.autoKitchen?"checked":""}> اطبع تذكرة المطبخ تلقائياً لكل طلب جديد</label>
+    <div class="row" style="margin-top:8px;align-items:center"><div class="field" style="flex:0 0 140px"><label class="label" for="prnCopies">عدد النسخ</label><select id="prnCopies" data-prn-copies>${[1,2,3].map(n=>`<option value="${n}" ${c.copies===n?"selected":""}>${n}</option>`).join("")}</select></div>
+      <button class="btn ghost" data-prn-test>طباعة تجريبية</button></div>`}
 
 /* ---------- modals ---------- */
 function renderModal(){

@@ -3,14 +3,14 @@
    - pinned CDN libraries / fonts / images: cache-first
    - Supabase REST GET: network-first with cache fallback (cleared on logout)
    - Supabase auth, realtime and all writes: network only */
-const VERSION = "crunchy-v3";
+const VERSION = "crunchy-v4";
 const SHELL = VERSION + "-shell";
 const STATIC = VERSION + "-static";
 const API = "crunchy-api";
 const SHELL_FILES = [
   "./", "./index.html", "./config.js", "./manifest.webmanifest", "./css/app.css",
   "./js/util.js", "./js/data.js", "./js/auth.js", "./js/views-sale.js", "./js/views-store.js",
-  "./js/views-admin.js", "./js/events.js", "./js/pwa.js", "./js/main.js",
+  "./js/views-admin.js", "./js/print.js", "./js/agent.js", "./js/events.js", "./js/pwa.js", "./js/main.js",
   "./img/logo-light.png", "./img/logo-dark.png", "./img/icons/icon-192.png", "./img/icons/favicon-32.png"
 ];
 

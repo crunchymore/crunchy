@@ -6,7 +6,7 @@ const VIEWS=[
   ["stock","الأرصدة","store","owner manager store"],["receive","استلام فاتورة","store","owner manager store"],["transfer","ترحيل للفرع","store","owner manager store"],
   ["waste","تلف وجرد","store","owner manager store"],["items","المواد","store","owner manager store"],["suppliers","الموردين","store","owner manager store"],
   ["dash","لوحة التحكم","admin","owner manager"],["settle","الموازنة","admin","owner"],["menu","المنيو والأسعار","admin","owner"],
-  ["staff","الموظفين","admin","owner"],["branches","الفروع","admin","owner"],["setup","الإعدادات","admin","owner"]];
+  ["ai","الموظفين الأذكياء","admin","owner manager"],["staff","الموظفين","admin","owner"],["branches","الفروع","admin","owner"],["setup","الإعدادات","admin","owner"]];
 const ICON={
   sale:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>',
   kitchen:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-8.5z"/></svg>',
@@ -39,7 +39,7 @@ function renderNav(){
   document.title=(cur?cur[1]+" · ":"")+"كرانشي ومور";
 }
 const VIEW_FN={pos:renderPOS,board:renderBoard,customers:renderCustomers,kds:renderKDS,recipes:renderRecipes,stock:renderStock,receive:renderReceive,transfer:renderTransfer,
-  waste:renderWaste,items:renderItems,suppliers:renderSuppliers,dash:renderDash,settle:renderSettle,menu:renderMenu,staff:renderStaff,branches:renderBranches,setup:renderSetup,account:renderAccount};
+  waste:renderWaste,items:renderItems,suppliers:renderSuppliers,dash:renderDash,settle:renderSettle,menu:renderMenu,staff:renderStaff,branches:renderBranches,setup:renderSetup,ai:renderAI,account:renderAccount};
 function render(){
   if(S.screen!=="app")return;
   renderNav();
