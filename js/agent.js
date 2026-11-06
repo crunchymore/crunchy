@@ -10,7 +10,7 @@ window.CR=(function(){
     async ready(ms){const end=Date.now()+(ms||20000);while(Date.now()<end){if(S.uid&&S.role&&S.loaded)return {ok:true,role:S.role,name:(S.me||{}).full_name||""};if(S.screen==="login"||S.screen==="setup")break;await new Promise(r=>setTimeout(r,300))}
       return {ok:false,reason:S.screen==="login"?"NOT_SIGNED_IN":"TIMEOUT"}},
     whoami(){return {uid:S.uid,role:S.role,name:(S.me||{}).full_name||"",branch:curBranch&&curBranch()}},
-    async menu(){need();await load("menu");return S.menu.filter(m=>m.active).map(m=>({id:m.id,code:m.code,name:m.name,cat:m.cat,price:m.price,appPrice:m.appPrice}))},
+    async menu(){need();const own=S.role==="owner";await load(...(own?["menu","costs"]:["menu"]));return S.menu.filter(m=>m.active).map(m=>({id:m.id,code:m.code,name:m.name,cat:m.cat,price:m.price,appPrice:m.appPrice,...(own?{cost:curCost(m.id)}:{})}))},
     async settings(){need();await load("settings");const s=S.settings;return {areas:s.areas,channels:s.channels,packaging:s.packaging,lateMins:s.lateMins,costMode:s.costMode}},
     async branches(){need();await load("branches");return S.branches},
     async orders(from,to){need();const rows=await all("orders","*",p=>p.gte("created_at",iso(from||Date.now()-864e5)).lt("created_at",iso(to||Date.now()+6e4)).order("created_at",{ascending:true}));return rows.map(mapOrder)},
