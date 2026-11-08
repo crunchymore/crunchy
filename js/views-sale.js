@@ -88,7 +88,7 @@ function renderKDS(){
   const list=tb.filter(o=>o.status==="new"||o.status==="prep").sort((a,b)=>a.ts-b.ts);
   const ready=tb.filter(o=>o.status==="ready").sort((a,b)=>a.ts-b.ts);
   const recLine=i=>{const r=S.recipes[i.mid];const rl=recipeLines(i.mid);if(!rl.length)return "";const y=Number(r.yield)||1;
-    return `<details class="krec"><summary>الوصفة</summary><ul>${rl.map(l=>`<li>${h(invName(l.itemId))}: ${qn((Number(l.qty)||0)*i.qty/y,invUnit(l.itemId))}</li>`).join("")}</ul>${r.notes?`<div>${h(r.notes)}</div>`:""}</details>`};
+    return `<details class="krec"><summary>الوصفة</summary><ul>${rl.map(l=>`<li>${h(invName(l.itemId))}: ${qtyTxt(l.itemId,(Number(l.qty)||0)*i.qty/y)}</li>`).join("")}</ul>${r.notes?`<div>${h(r.notes)}</div>`:""}</details>`};
   return `<div class="row" style="align-items:center;margin-bottom:12px"><h2 style="margin:0">شاشة المطبخ${br?" · "+h(brName(br)):""}</h2><span class="note" style="flex:0;white-space:nowrap"><span class="num">${list.length}</span> طلب بالمطبخ</span></div>
   ${list.length?`<div class="kds">${list.map(o=>{const m=mins(o.ts);return `<div class="kcard st-${o.status} ${m>=late?"late":""}" data-order="${h(o.id)}">
     <div class="kh"><span class="num">#${h(o.no)}</span><span class="pill ${STATUS[o.status].c}">${STATUS[o.status].t}</span><span class="num" style="${m>=late?"color:var(--bad)":""}">${m} د</span></div>
@@ -103,6 +103,7 @@ function renderKDS(){
 }
 
 /* ---------- recipes ---------- */
+function draftBase(d){return {...d,lines:(d.lines||[]).map(l=>({itemId:l.itemId,qty:(Number(l.qty)||0)*(l.u?uf(l.itemId,l.u):1)}))}}
 function recSummary(m,r){
   const fc=recipeCost(m.id,r);const pk=Number(S.settings.packaging)||0;
   return `<div class="tot-line"><span>كلفة المواد للوجبة</span>${money(fc)}</div>
@@ -114,21 +115,22 @@ function recSummary(m,r){
 function renderRecipes(){
   const rows=[...S.menu].sort((a,b)=>(a.cat||"").localeCompare(b.cat||"","ar")||(a.sort-b.sort));
   const ro=!isMgr();const showCost=isMgr();const m=S.recSel&&S.menu.find(x=>x.id===S.recSel);
-  if(m&&!ro&&(!S.recDraft||S.recDraft.mid!==m.id)){const r=S.recipes[m.id]||{};S.recDraft={mid:m.id,lines:(r.lines||[]).map(l=>({...l})),yield:r.yield||1,notes:r.notes||""};if(!S.recDraft.lines.length)S.recDraft.lines.push({itemId:"",qty:""})}
+  if(m&&!ro&&(!S.recDraft||S.recDraft.mid!==m.id)){const r=S.recipes[m.id]||{};S.recDraft={mid:m.id,lines:(r.lines||[]).map(l=>{const b=bestUnit(l.itemId,l.qty);return {itemId:l.itemId,u:b.name,qty:String(Math.round((Number(l.qty)||0)/b.f*1e6)/1e6)}}),yield:r.yield||1,notes:r.notes||""};if(!S.recDraft.lines.length)S.recDraft.lines.push({itemId:"",qty:""})}
   let ed="";
   if(m){const r=ro?(S.recipes[m.id]||{lines:[],yield:1}):S.recDraft;
     ed=`<div class="panel" id="recEd"><div class="row" style="align-items:center"><h2 style="margin:0">${h(m.name)}</h2>${m.code?`<span class="pill num" style="flex:0">${h(m.code)}</span>`:""}</div>
-    ${ro?`${recipeLines(m.id).length?`<div class="tbl-wrap" style="margin-top:10px"><table><thead><tr><th>المادة</th><th>الكمية</th></tr></thead><tbody>${recipeLines(m.id).map(l=>`<tr><td>${h(invName(l.itemId))}</td><td>${qn(l.qty,invUnit(l.itemId))}</td></tr>`).join("")}</tbody></table></div>
+    ${ro?`${recipeLines(m.id).length?`<div class="tbl-wrap" style="margin-top:10px"><table><thead><tr><th>المادة</th><th>الكمية</th></tr></thead><tbody>${recipeLines(m.id).map(l=>`<tr><td>${h(invName(l.itemId))}</td><td>${qtyTxt(l.itemId,l.qty)}</td></tr>`).join("")}</tbody></table></div>
       ${r.yield>1?`<p class="note">الكميات تطلع <span class="num">${r.yield}</span> وجبة.</p>`:""}${r.notes?`<p style="white-space:pre-wrap">${h(r.notes)}</p>`:""}`:`<div class="empty">بعد ما انكتبت وصفة لهالوجبة</div>`}`
     :`<p class="note">حدد كمية كل مادة للوجبة الوحدة. الكلفة محسوبة من متوسط سعر الشراء بالمخزن.</p>
       ${!S.inv.length?`<div class="banner">أول شي أضف المواد من <a href="#items">المخزن ← المواد</a>.</div>`:""}
       <div id="recLines">${r.lines.map((l,i)=>`<div class="row lr"><div class="field" style="flex:3"><label class="label" for="rl-item-${i}">المادة</label><select id="rl-item-${i}" data-rl="${i}" data-rf="itemId">${invOpts(l.itemId)}</select></div>
-        <div class="field"><label class="label" for="rl-qty-${i}">الكمية ${l.itemId?"("+h(invUnit(l.itemId))+")":""}</label><input id="rl-qty-${i}" data-rl="${i}" data-rf="qty" type="number" min="0" step="any" inputmode="decimal" value="${h(l.qty)}"></div>
+        <div class="field"><label class="label" for="rl-qty-${i}">الكمية</label><input id="rl-qty-${i}" data-rl="${i}" data-rf="qty" type="number" min="0" step="any" inputmode="decimal" value="${h(l.qty)}"></div>
+        ${l.itemId?`<div class="field"><label class="label" for="rl-u-${i}">الوحدة</label>${unitSelect(l.itemId,`id="rl-u-${i}" data-rl="${i}" data-rf="u"`,l.u)}</div>`:""}
         <button class="btn ghost sm x" data-rldel="${i}" aria-label="حذف السطر">حذف</button></div>`).join("")}</div>
       <button class="btn ghost sm" id="rlAdd">+ مادة</button>
       <div class="row" style="margin-top:12px"><div class="field"><label class="label" for="ryield">الكمية تطلع كم وجبة</label><input id="ryield" type="number" min="1" step="1" value="${h(r.yield||1)}"></div>
         <div class="field" style="flex:3"><label class="label" for="rnotes">طريقة التحضير / ملاحظات</label><input id="rnotes" value="${h(r.notes||"")}" placeholder="قلي 6 دقايق على 175 درجة"></div></div>`}
-    <div id="recsum" style="margin-top:12px">${showCost?recSummary(m,r):""}</div>
+    <div id="recsum" style="margin-top:12px">${showCost?recSummary(m,ro?r:draftBase(r)):""}</div>
     ${ro?`<div class="row" style="margin-top:12px"><button class="btn ghost" data-recsel="" style="flex:0">إغلاق</button></div>`:`<div class="row" style="margin-top:12px"><button class="btn" id="recSave">حفظ الوصفة</button><button class="btn ghost" data-recsel="" style="flex:0">إغلاق</button></div>`}</div>`}
   return `<div class="cols"><div class="panel"><h2>الوصفات</h2><p class="note">${ro?"اختار وجبة حتى تشوف مقاديرها.":"لكل وجبة وصفة بالمقادير. منها تنحسب كلفة الأكل الحقيقية، وتنخصم المواد من مخزن الفرع لما يتحضر الطلب (بوضع الوصفات)."}</p>
     ${rows.length?`<div class="tbl-wrap"><table><thead><tr><th>الكود</th><th>الوجبة</th><th>المواد</th>${showCost?"<th>الكلفة</th><th>نسبة الكلفة</th>":""}</tr></thead><tbody>

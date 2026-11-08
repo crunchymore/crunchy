@@ -13,7 +13,7 @@ const mapOrder=r=>({id:r.id,no:r.no,branchId:r.branch_id,channel:r.channel,items
   revenue:+r.revenue||0,commissionPct:+r.commission_pct||0,commission:+r.commission||0,packaging:+r.packaging||0,status:r.status,customer:r.customer||{},area:r.area||"",
   deliveryFee:+r.delivery_fee||0,note:r.note||"",by:r.created_by,ts:tsOf(r.created_at),costMode:r.cost_mode,consumed:!!r.consumed,foodCost:r.food_cost==null?null:+r.food_cost});
 const mapMenu=r=>({id:r.id,name:r.name,cat:r.cat,code:r.code||"",price:+r.price||0,appPrice:+r.app_price||0,active:r.active!==false,sort:+r.sort||0});
-const mapInv=r=>({id:r.id,name:r.name,code:r.code||"",unit:r.unit||"",category:r.category||"",minQty:+r.min_qty||0,avgCost:+r.avg_cost||0,lastCost:+r.last_cost||0,active:r.active!==false});
+const mapInv=r=>({id:r.id,name:r.name,code:r.code||"",unit:r.unit||"",units:Array.isArray(r.units)?r.units:[],category:r.category||"",minQty:+r.min_qty||0,avgCost:+r.avg_cost||0,lastCost:+r.last_cost||0,active:r.active!==false});
 const mapSettings=r=>r?{channels:r.channels||[],areas:r.areas||[],packaging:+r.packaging||0,lateMins:+r.late_mins||35,directPct:+r.direct_pct||20,appPct:+r.app_pct||40,
   costMode:r.cost_mode==="recipe"?"recipe":"supplier",costModeLog:Array.isArray(r.cost_mode_log)?r.cost_mode_log:[]}:{...DEFAULT_SETTINGS};
 const mapMove=r=>({id:r.id,type:r.type,loc:r.loc,toLoc:r.to_loc,ts:tsOf(r.created_at),ref:r.ref||"",note:r.note||"",reason:r.reason||"",orderId:r.order_id,purchaseId:r.purchase_id,
@@ -102,9 +102,23 @@ const isOwner=()=>S.role==="owner";
 const invById=id=>S.inv.find(x=>x.id===id);
 const invName=id=>{const i=invById(id);return i?i.name:"مادة محذوفة"};
 const invUnit=id=>(invById(id)||{}).unit||"";
+/* ---------- units: up to 4 equivalent units per material, base (smallest) first ---------- */
+function unitsOf(i){const raw=Array.isArray(i&&i.units)&&i.units.length?i.units:[{name:(i&&i.unit)||"",per:1}];let f=1;
+  return raw.slice(0,4).map((x,k)=>{const per=k?Math.max(1,Number(x.per)||1):1;if(k)f*=per;return {name:String(x.name||""),per,f}})}
+const unitsById=id=>unitsOf(invById(id));
+const uf=(id,u)=>{const x=unitsById(id).find(z=>z.name===u);return x?x.f:1};
+function bestUnit(id,q){const us=unitsById(id);const a=Math.abs(Number(q)||0);let b=us[0];for(const u of us)if(a>=u.f-1e-9)b=u;return b}
+function qtyTxt(id,q){const b=bestUnit(id,q);return `<span class="num">${fq((Number(q)||0)/b.f)}</span> ${h(b.name)}`}
+const workUnit=id=>{const us=unitsById(id);return us[Math.min(1,us.length-1)]};
+const costTxt=(id,c)=>{const u=workUnit(id);return `${money((Number(c)||0)*u.f)} <span class="mini">/ ${h(u.name)}</span>`};
+const defUnit=(id,big)=>id?(big?workUnit(id):unitsById(id)[0]).name:"";
+function unitSelect(id,attrs,cur){if(!id)return "";const us=unitsById(id);
+  if(us.length<2)return `<input value="${h(us[0].name)}" disabled aria-label="الوحدة">`;
+  return `<select ${attrs} aria-label="الوحدة">${us.map(u=>`<option value="${h(u.name)}" ${u.name===cur?"selected":""}>${h(u.name)}${u.f>1?" ("+fq(u.f)+" "+h(us[0].name)+")":""}</option>`).join("")}</select>`}
+const unitChain=i=>unitsOf(i).map((u,k)=>k?`${h(u.name)} = <span class="num">${fq(u.per)}</span> ${h(unitsOf(i)[k-1].name)}`:h(u.name)).join(" ← ");
 const avgC=id=>Number((invById(id)||{}).avgCost)||0;
 const activeInv=()=>S.inv.filter(i=>i.active!==false).sort((a,b)=>(a.category||"").localeCompare(b.category||"","ar")||(a.name||"").localeCompare(b.name||"","ar"));
-const invOpts=sel=>opts(activeInv().map(i=>[i.id,i.name+" ("+(i.unit||"")+")"+(i.code?" · "+i.code:"")]),sel,"اختار المادة");
+const invOpts=sel=>opts(activeInv().map(i=>[i.id,i.name+" ("+unitsOf(i).map(u=>u.name).join("/")+")"+(i.code?" · "+i.code:"")]),sel,"اختار المادة");
 function moveEffects(m){const out=[];for(const l of m.lines||[]){const q=Number(l.qty)||0;if(!l.itemId||!q)continue;const a=Math.abs(q);
   if(m.type==="transfer"){out.push({itemId:l.itemId,loc:m.loc,q:-a,uc:l.unitCost});if(m.toLoc)out.push({itemId:l.itemId,loc:m.toLoc,q:a,uc:l.unitCost})}
   else if(m.type==="receive")out.push({itemId:l.itemId,loc:m.loc,q:a,uc:l.unitCost});
